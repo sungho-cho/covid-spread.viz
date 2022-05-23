@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package coviddata;
+
+service CovidData {
+    rpc GetActiveCasesByDay(CountryDateRequest) returns (ActiveCaseResponse) {}
+}
+
+enum Country {
+    INVALID = 0;
+    SOUTH_KOREA = 1;
+    UNITED_STATES = 2;
+}
+
+message Date {
+    int32 year = 1;
+    int32 month = 2;
+    int32 day = 3;
+}
+
+message CountryDateRequest {
+    Country country = 1;
+    Date date = 2;
+}
+
+message ActiveCaseResponse {
+    int32 num_cases = 1;
+}
