@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CovidDataClient interface {
 	GetActiveCases(ctx context.Context, in *GetActiveCasesRequest, opts ...grpc.CallOption) (*GetActiveCasesResponse, error)
-	GetDateData(ctx context.Context, in *GetDateDataRequest, opts ...grpc.CallOption) (*GetDateDataResponse, error)
+	GetCountriesData(ctx context.Context, in *GetCountriesDataRequest, opts ...grpc.CallOption) (*GetCountriesDataResponse, error)
 }
 
 type covidDataClient struct {
@@ -43,9 +43,9 @@ func (c *covidDataClient) GetActiveCases(ctx context.Context, in *GetActiveCases
 	return out, nil
 }
 
-func (c *covidDataClient) GetDateData(ctx context.Context, in *GetDateDataRequest, opts ...grpc.CallOption) (*GetDateDataResponse, error) {
-	out := new(GetDateDataResponse)
-	err := c.cc.Invoke(ctx, "/proto.CovidData/GetDateData", in, out, opts...)
+func (c *covidDataClient) GetCountriesData(ctx context.Context, in *GetCountriesDataRequest, opts ...grpc.CallOption) (*GetCountriesDataResponse, error) {
+	out := new(GetCountriesDataResponse)
+	err := c.cc.Invoke(ctx, "/proto.CovidData/GetCountriesData", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (c *covidDataClient) GetDateData(ctx context.Context, in *GetDateDataReques
 // for forward compatibility
 type CovidDataServer interface {
 	GetActiveCases(context.Context, *GetActiveCasesRequest) (*GetActiveCasesResponse, error)
-	GetDateData(context.Context, *GetDateDataRequest) (*GetDateDataResponse, error)
+	GetCountriesData(context.Context, *GetCountriesDataRequest) (*GetCountriesDataResponse, error)
 	mustEmbedUnimplementedCovidDataServer()
 }
 
@@ -68,8 +68,8 @@ type UnimplementedCovidDataServer struct {
 func (UnimplementedCovidDataServer) GetActiveCases(context.Context, *GetActiveCasesRequest) (*GetActiveCasesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetActiveCases not implemented")
 }
-func (UnimplementedCovidDataServer) GetDateData(context.Context, *GetDateDataRequest) (*GetDateDataResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetDateData not implemented")
+func (UnimplementedCovidDataServer) GetCountriesData(context.Context, *GetCountriesDataRequest) (*GetCountriesDataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCountriesData not implemented")
 }
 func (UnimplementedCovidDataServer) mustEmbedUnimplementedCovidDataServer() {}
 
@@ -102,20 +102,20 @@ func _CovidData_GetActiveCases_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CovidData_GetDateData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetDateDataRequest)
+func _CovidData_GetCountriesData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCountriesDataRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CovidDataServer).GetDateData(ctx, in)
+		return srv.(CovidDataServer).GetCountriesData(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.CovidData/GetDateData",
+		FullMethod: "/proto.CovidData/GetCountriesData",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CovidDataServer).GetDateData(ctx, req.(*GetDateDataRequest))
+		return srv.(CovidDataServer).GetCountriesData(ctx, req.(*GetCountriesDataRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -132,8 +132,8 @@ var CovidData_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _CovidData_GetActiveCases_Handler,
 		},
 		{
-			MethodName: "GetDateData",
-			Handler:    _CovidData_GetDateData_Handler,
+			MethodName: "GetCountriesData",
+			Handler:    _CovidData_GetCountriesData_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

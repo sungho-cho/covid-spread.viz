@@ -6,7 +6,7 @@ package proto;
 
 service CovidData {
     rpc GetActiveCases(GetActiveCasesRequest) returns (GetActiveCasesResponse) {}
-    rpc GetDateData(GetDateDataRequest) returns (GetDateDataResponse) {}
+    rpc GetCountriesData(GetCountriesDataRequest) returns (GetCountriesDataResponse) {}
 }
 
 message Date {
@@ -24,12 +24,12 @@ message GetActiveCasesResponse {
     int32 num_cases = 1;
 }
 
-message GetDateDataRequest {
+message GetCountriesDataRequest {
     Date date = 1;
 }
 
-message GetDateDataResponse {
-    DateData date_data = 1;
+message GetCountriesDataResponse {
+    CountriesData date_data = 1;
 }
 
 message CountryData {
@@ -39,7 +39,7 @@ message CountryData {
     int32 deaths = 4;
 }
 
-message DateData {
+message CountriesData {
     Date date = 1;
     repeated CountryData countries = 2;
 }
