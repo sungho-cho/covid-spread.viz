@@ -2,15 +2,18 @@ package main
 
 import (
 	"context"
+	"io/ioutil"
 	"log"
 	"net"
+	"time"
 
-	pb "github.com/sungho-cho/covid-spread.viz/backend/proto"
+	"github.com/golang/protobuf/proto"
+	pb "github.com/sungho-cho/covid-spread.viz/backend/protos"
 	"github.com/sungho-cho/covid-spread.viz/backend/utils"
 	"google.golang.org/grpc"
 )
 
-const port = "9000"
+const port = "9090"
 
 type covidDataServer struct {
 	pb.CovidDataServer
@@ -19,6 +22,26 @@ type covidDataServer struct {
 func (s *covidDataServer) GetActiveCases(ctx context.Context, req *pb.GetActiveCasesRequest) (*pb.GetActiveCasesResponse, error) {
 	return &pb.GetActiveCasesResponse{
 		NumCases: 5,
+	}, nil
+}
+
+func (s *covidDataServer) GetCountriesData(ctx context.Context, req *pb.GetCountriesDataRequest) (*pb.GetCountriesDataResponse, error) {
+	date := time.Date(int(req.Date.Year), time.Month(req.Date.Month), int(req.Date.Day), 0, 0, 0, 0, time.UTC)
+	filePath := utils.GetFilePath(date)
+	in, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		log.Println("Error reading file:", err)
+		return &pb.GetCountriesDataResponse{}, nil
+	}
+	countriesData := &pb.CountriesData{}
+	if err := proto.Unmarshal(in, countriesData); err != nil {
+		log.Println("Failed to parse countries data:", err)
+		return &pb.GetCountriesDataResponse{}, nil
+	}
+
+	log.Println("GetCountriesData successfully sending proto for:", date)
+	return &pb.GetCountriesDataResponse{
+		CountriesData: countriesData,
 	}, nil
 }
 

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option go_package = "github.com/sungho-cho/covid-spread.viz/backend/proto";
 
-package proto;
+package protos;
 
 service CovidData {
     rpc GetActiveCases(GetActiveCasesRequest) returns (GetActiveCasesResponse) {}
@@ -29,14 +29,15 @@ message GetCountriesDataRequest {
 }
 
 message GetCountriesDataResponse {
-    CountriesData date_data = 1;
+    CountriesData countries_data = 1;
 }
 
 message CountryData {
-    Date date = 1;
-    int32 confirmed = 2;
-    int32 recovered = 3;
-    int32 deaths = 4;
+    string country = 1;
+    Date date = 2;
+    int32 confirmed = 3;
+    int32 recovered = 4;
+    int32 deaths = 5;
 }
 
 message CountriesData {
