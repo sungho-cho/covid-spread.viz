@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react';
-// import React from 'react';
 import './App.css';
-import Map, { Marker } from 'react-map-gl';
 
+import Map, { Marker } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-import { Date, GetCountriesDataRequest, GetCountriesDataResponse } from "./protos/covid_data_pb";
-import { CovidDataClient } from "./protos/covid_data_grpc_web_pb";
+import { Date, GetCountriesDataRequest } from "./protos/covid_data_pb";
+import { CovidDataClient } from "./protos/Covid_dataServiceClientPb";
 
+const gRPC_client = new CovidDataClient('http://localhost:8080');
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiZGlkb2c5NSIsImEiOiJja3d1Ymd5N2swaGRjMm9xbjU1OGRkMDl0In0.jkmsYL4EYs3VmsU6zUxbPQ';
-var gRPC_client = new CovidDataClient('http://localhost:8080');
 
 function App() {
   const getData = () => {
