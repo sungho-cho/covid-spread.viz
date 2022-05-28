@@ -15,7 +15,9 @@ function App() {
   }, [])
 
   return (
-    <CovidMap />
+    <div>
+      <CovidMap />
+    </div>
   );
 }
 
