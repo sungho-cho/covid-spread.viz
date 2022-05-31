@@ -39,6 +39,12 @@ func (s *covidDataServer) GetCountriesData(ctx context.Context, req *pb.GetCount
 	}, nil
 }
 
+func (s *covidDataServer) GetMostRecentDate(ctx context.Context, empty_req *pb.Empty) (*pb.Date, error) {
+	lastDate := utils.GetLastDate()
+	log.Println("GetMostRecentDate successfully sending proto:", lastDate)
+	return utils.DateToProto(lastDate), nil
+}
+
 func main() {
 	// Fetch covid data for all countries and save the data locally
 	go utils.Fetch()
