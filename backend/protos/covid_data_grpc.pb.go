@@ -22,7 +22,6 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CovidDataClient interface {
-	GetActiveCases(ctx context.Context, in *GetActiveCasesRequest, opts ...grpc.CallOption) (*GetActiveCasesResponse, error)
 	GetCountriesData(ctx context.Context, in *GetCountriesDataRequest, opts ...grpc.CallOption) (*GetCountriesDataResponse, error)
 }
 
@@ -32,15 +31,6 @@ type covidDataClient struct {
 
 func NewCovidDataClient(cc grpc.ClientConnInterface) CovidDataClient {
 	return &covidDataClient{cc}
-}
-
-func (c *covidDataClient) GetActiveCases(ctx context.Context, in *GetActiveCasesRequest, opts ...grpc.CallOption) (*GetActiveCasesResponse, error) {
-	out := new(GetActiveCasesResponse)
-	err := c.cc.Invoke(ctx, "/protos.CovidData/GetActiveCases", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *covidDataClient) GetCountriesData(ctx context.Context, in *GetCountriesDataRequest, opts ...grpc.CallOption) (*GetCountriesDataResponse, error) {
@@ -56,7 +46,6 @@ func (c *covidDataClient) GetCountriesData(ctx context.Context, in *GetCountries
 // All implementations must embed UnimplementedCovidDataServer
 // for forward compatibility
 type CovidDataServer interface {
-	GetActiveCases(context.Context, *GetActiveCasesRequest) (*GetActiveCasesResponse, error)
 	GetCountriesData(context.Context, *GetCountriesDataRequest) (*GetCountriesDataResponse, error)
 	mustEmbedUnimplementedCovidDataServer()
 }
@@ -65,9 +54,6 @@ type CovidDataServer interface {
 type UnimplementedCovidDataServer struct {
 }
 
-func (UnimplementedCovidDataServer) GetActiveCases(context.Context, *GetActiveCasesRequest) (*GetActiveCasesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetActiveCases not implemented")
-}
 func (UnimplementedCovidDataServer) GetCountriesData(context.Context, *GetCountriesDataRequest) (*GetCountriesDataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCountriesData not implemented")
 }
@@ -82,24 +68,6 @@ type UnsafeCovidDataServer interface {
 
 func RegisterCovidDataServer(s grpc.ServiceRegistrar, srv CovidDataServer) {
 	s.RegisterService(&CovidData_ServiceDesc, srv)
-}
-
-func _CovidData_GetActiveCases_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetActiveCasesRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CovidDataServer).GetActiveCases(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/protos.CovidData/GetActiveCases",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CovidDataServer).GetActiveCases(ctx, req.(*GetActiveCasesRequest))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _CovidData_GetCountriesData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -127,10 +95,6 @@ var CovidData_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "protos.CovidData",
 	HandlerType: (*CovidDataServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "GetActiveCases",
-			Handler:    _CovidData_GetActiveCases_Handler,
-		},
 		{
 			MethodName: "GetCountriesData",
 			Handler:    _CovidData_GetCountriesData_Handler,
