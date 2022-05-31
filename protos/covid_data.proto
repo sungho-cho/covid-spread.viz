@@ -24,7 +24,7 @@ message GetCountriesDataResponse {
 
 message CountryData {
     string country = 1; // Country name in English
-    string ISO3 = 2; // ISO 3166-1 country code
+    repeated string iso3s = 2; // ISO 3166-1 country codes
     Date date = 3;
     int32 confirmed = 4;
     int32 recovered = 5;
