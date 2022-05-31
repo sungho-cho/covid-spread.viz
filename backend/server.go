@@ -19,12 +19,6 @@ type covidDataServer struct {
 	pb.CovidDataServer
 }
 
-func (s *covidDataServer) GetActiveCases(ctx context.Context, req *pb.GetActiveCasesRequest) (*pb.GetActiveCasesResponse, error) {
-	return &pb.GetActiveCasesResponse{
-		NumCases: 5,
-	}, nil
-}
-
 func (s *covidDataServer) GetCountriesData(ctx context.Context, req *pb.GetCountriesDataRequest) (*pb.GetCountriesDataResponse, error) {
 	date := time.Date(int(req.Date.Year), time.Month(req.Date.Month), int(req.Date.Day), 0, 0, 0, 0, time.UTC)
 	filePath := utils.GetFilePath(date)
