@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type CovidDataClient interface {
 	GetCountriesData(ctx context.Context, in *GetCountriesDataRequest, opts ...grpc.CallOption) (*GetCountriesDataResponse, error)
 	GetMostRecentDate(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Date, error)
+	GetAllData(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetAllDataResponse, error)
 }
 
 type covidDataClient struct {
@@ -52,12 +53,22 @@ func (c *covidDataClient) GetMostRecentDate(ctx context.Context, in *Empty, opts
 	return out, nil
 }
 
+func (c *covidDataClient) GetAllData(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetAllDataResponse, error) {
+	out := new(GetAllDataResponse)
+	err := c.cc.Invoke(ctx, "/protos.CovidData/GetAllData", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CovidDataServer is the server API for CovidData service.
 // All implementations must embed UnimplementedCovidDataServer
 // for forward compatibility
 type CovidDataServer interface {
 	GetCountriesData(context.Context, *GetCountriesDataRequest) (*GetCountriesDataResponse, error)
 	GetMostRecentDate(context.Context, *Empty) (*Date, error)
+	GetAllData(context.Context, *Empty) (*GetAllDataResponse, error)
 	mustEmbedUnimplementedCovidDataServer()
 }
 
@@ -70,6 +81,9 @@ func (UnimplementedCovidDataServer) GetCountriesData(context.Context, *GetCountr
 }
 func (UnimplementedCovidDataServer) GetMostRecentDate(context.Context, *Empty) (*Date, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMostRecentDate not implemented")
+}
+func (UnimplementedCovidDataServer) GetAllData(context.Context, *Empty) (*GetAllDataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllData not implemented")
 }
 func (UnimplementedCovidDataServer) mustEmbedUnimplementedCovidDataServer() {}
 
@@ -120,6 +134,24 @@ func _CovidData_GetMostRecentDate_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CovidData_GetAllData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CovidDataServer).GetAllData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.CovidData/GetAllData",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CovidDataServer).GetAllData(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CovidData_ServiceDesc is the grpc.ServiceDesc for CovidData service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +166,10 @@ var CovidData_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMostRecentDate",
 			Handler:    _CovidData_GetMostRecentDate_Handler,
+		},
+		{
+			MethodName: "GetAllData",
+			Handler:    _CovidData_GetAllData_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
