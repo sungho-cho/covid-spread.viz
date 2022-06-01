@@ -7,12 +7,17 @@ package protos;
 service CovidData {
     rpc GetCountriesData(GetCountriesDataRequest) returns (GetCountriesDataResponse) {}
     rpc GetMostRecentDate(Empty) returns (Date) {}
+    rpc GetAllData(Empty) returns (GetAllDataResponse) {}
 }
 
 message Date {
     int32 year = 1;
     int32 month = 2;
     int32 day = 3;
+}
+
+message GetAllDataResponse {
+    repeated CountriesData data = 1;
 }
 
 message GetCountriesDataRequest {

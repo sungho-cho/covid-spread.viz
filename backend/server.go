@@ -19,6 +19,28 @@ type covidDataServer struct {
 	pb.CovidDataServer
 }
 
+func (s *covidDataServer) GetAllData(ctx context.Context, empty_req *pb.Empty) (*pb.GetAllDataResponse, error) {
+	var data []*pb.CountriesData
+	lastDate := utils.GetLastDate()
+	for date := utils.FirstDate; date.Before(lastDate) || date == lastDate; date = utils.NextDay(date) {
+		filePath := utils.GetFilePath(date)
+		in, err := ioutil.ReadFile(filePath)
+		if err != nil {
+			log.Println("Error reading file for date", date, ":", err)
+			continue
+		}
+		countriesData := &pb.CountriesData{}
+		if err := proto.Unmarshal(in, countriesData); err != nil {
+			log.Println("Failed to parse countries data for date", date, ":", err)
+			continue
+		}
+		data = append(data, countriesData)
+	}
+	return &pb.GetAllDataResponse{
+		Data: data,
+	}, nil
+}
+
 func (s *covidDataServer) GetCountriesData(ctx context.Context, req *pb.GetCountriesDataRequest) (*pb.GetCountriesDataResponse, error) {
 	date := time.Date(int(req.Date.Year), time.Month(req.Date.Month), int(req.Date.Day), 0, 0, 0, 0, time.UTC)
 	filePath := utils.GetFilePath(date)
@@ -54,7 +76,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(grpc.MaxRecvMsgSize(1024*1024*20), grpc.MaxSendMsgSize(1024*1024*20))
 	pb.RegisterCovidDataServer(grpcServer, &covidDataServer{})
 
 	// Start the gRPC server
