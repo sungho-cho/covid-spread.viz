@@ -3,14 +3,20 @@ import { CovidDataClient } from "../protos/Covid_dataServiceClientPb";
 
 const grpcClient = new CovidDataClient('http://localhost:8080');
 
-export const getAllData = (callback: (data: CountriesData[], firstDate: Date, lastDate: Date) => void) => {
+export const getAllData = (callback: (data: { [dateKey: number]: CountriesData }, firstDate: Date, lastDate: Date) => void) => {
   var request = new Empty()
   grpcClient.getAllData(request, {}, (err, response) => {
     if (response == null) {
       console.log(err)
     } else {
+      var data: { [dateKey: number]: CountriesData } = {}
+      var date = dateFromProto(response.getFirstDate()!)
+      for (const countriesData of response.getDataList()!) {
+        data[date.getTime()] = countriesData
+        date = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + 1))
+      }
       callback(
-        response.getDataList()!,
+        data,
         dateFromProto(response.getFirstDate()!),
         dateFromProto(response.getLastDate()!)
       )

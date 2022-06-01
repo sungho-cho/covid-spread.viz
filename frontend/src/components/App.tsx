@@ -8,12 +8,12 @@ import { CountriesData } from '../protos/covid_data_pb'
 
 const App = () => {
   const [loading, setLoading] = useState(true)
-  const [data, setData] = useState<CountriesData[] | null>(null)
+  const [data, setData] = useState<{ [dateKey: number]: CountriesData } | null>(null)
   const [firstDate, setFirstDate] = useState<Date | null>(null)
   const [lastDate, setLastDate] = useState<Date | null>(null)
 
   useEffect(() => {
-    getAllData((data: CountriesData[], firstDate: Date, lastDate: Date) => {
+    getAllData((data: { [dateKey: number]: CountriesData }, firstDate: Date, lastDate: Date) => {
       setData(data)
       setFirstDate(firstDate)
       setLastDate(lastDate)
