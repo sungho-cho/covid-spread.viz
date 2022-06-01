@@ -36,11 +36,16 @@ func (s *covidDataServer) GetAllData(ctx context.Context, empty_req *pb.Empty) (
 		}
 		data = append(data, countriesData)
 	}
+<<<<<<< HEAD
 	log.Println("GetAllData successfully sending proto for:", utils.FirstDate, "~", lastDate)
 	return &pb.GetAllDataResponse{
 		FirstDate: utils.DateToProto(utils.FirstDate),
 		LastDate:  utils.DateToProto(lastDate),
 		Data:      data,
+=======
+	return &pb.GetAllDataResponse{
+		Data: data,
+>>>>>>> 92508c07b6c65410724d0b2c2c63c691b0fb552e
 	}, nil
 }
 
@@ -79,7 +84,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+<<<<<<< HEAD
 	grpcServer := grpc.NewServer(grpc.MaxRecvMsgSize(1024*1024*10), grpc.MaxSendMsgSize(1024*1024*10))
+=======
+	grpcServer := grpc.NewServer(grpc.MaxRecvMsgSize(1024*1024*20), grpc.MaxSendMsgSize(1024*1024*20))
+>>>>>>> 92508c07b6c65410724d0b2c2c63c691b0fb552e
 	pb.RegisterCovidDataServer(grpcServer, &covidDataServer{})
 
 	// Start the gRPC server
