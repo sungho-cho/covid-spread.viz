@@ -22,6 +22,7 @@ type covidDataServer struct {
 func (s *covidDataServer) GetAllData(ctx context.Context, empty_req *pb.Empty) (*pb.GetAllDataResponse, error) {
 	var data []*pb.CountriesData
 	lastDate := utils.GetLastDate()
+	firstDate := utils.PreviousDay(utils.FirstDate)
 	for date := utils.FirstDate; date.Before(lastDate) || date == lastDate; date = utils.NextDay(date) {
 		filePath := utils.GetFilePath(date)
 		in, err := ioutil.ReadFile(filePath)
@@ -34,11 +35,15 @@ func (s *covidDataServer) GetAllData(ctx context.Context, empty_req *pb.Empty) (
 			log.Println("Failed to parse countries data for date", date, ":", err)
 			continue
 		}
+		// add empty data for the day before DB's first date
+		if len(data) == 0 {
+			data = append(data, generateEmptyData(firstDate, countriesData))
+		}
 		data = append(data, countriesData)
 	}
-	log.Println("GetAllData successfully sending proto for:", utils.FirstDate, "~", lastDate)
+	log.Println("GetAllData successfully sending proto for:", firstDate, "~", lastDate)
 	return &pb.GetAllDataResponse{
-		FirstDate: utils.DateToProto(utils.FirstDate),
+		FirstDate: utils.DateToProto(firstDate),
 		LastDate:  utils.DateToProto(lastDate),
 		Data:      data,
 	}, nil
@@ -68,6 +73,22 @@ func (s *covidDataServer) GetMostRecentDate(ctx context.Context, empty_req *pb.E
 	lastDate := utils.GetLastDate()
 	log.Println("GetMostRecentDate successfully sending proto:", lastDate)
 	return utils.DateToProto(lastDate), nil
+}
+
+func generateEmptyData(firstDate time.Time, fullData *pb.CountriesData) *pb.CountriesData {
+	var countries []*pb.CountryData
+	for _, country := range fullData.Countries {
+		emptyCountry := &pb.CountryData{
+			Country:   country.Country,
+			Iso3S:     country.Iso3S,
+			Date:      utils.DateToProto(firstDate),
+			Confirmed: 0,
+			Recovered: 0,
+			Deaths:    0,
+		}
+		countries = append(countries, emptyCountry)
+	}
+	return &pb.CountriesData{Date: utils.DateToProto(firstDate), Countries: countries}
 }
 
 func main() {
