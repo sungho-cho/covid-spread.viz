@@ -1,10 +1,9 @@
-.dateslider {
+.data-select {
   padding: 6px 12px;
   z-index: 1;
   position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 95%;
+  top: 0;
+  right: 0;
   margin: 12px;
   border-radius: 4px;
 }
