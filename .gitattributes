@@ -1,0 +1,2 @@
+# Exclude auto-generated Javascript protobuf file from language stats
+*_pb.js linguist-vendored
