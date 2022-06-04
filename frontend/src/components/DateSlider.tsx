@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Slider from '@mui/material/Slider'
+import './DateSlider.css'
 
 interface DateSliderProps {
   date: Date,
@@ -48,19 +49,21 @@ const DateSlider = (props: DateSliderProps) => {
   }
 
   return (
-    <Slider
-      value={date.getTime()}
-      aria-label="Small steps"
-      defaultValue={firstDate.getTime()}
-      getAriaValueText={valueLabelFormat}
-      valueLabelFormat={valueLabelFormat}
-      step={86400000}
-      min={firstDate.getTime()}
-      max={lastDate.getTime()}
-      marks={marks}
-      valueLabelDisplay="auto"
-      onChange={updateDate}
-    />
+    <div className="dateslider">
+      <Slider
+        value={date.getTime()}
+        aria-label="Small steps"
+        defaultValue={firstDate.getTime()}
+        getAriaValueText={valueLabelFormat}
+        valueLabelFormat={valueLabelFormat}
+        step={86400000}
+        min={firstDate.getTime()}
+        max={lastDate.getTime()}
+        marks={marks}
+        valueLabelDisplay="auto"
+        onChange={updateDate}
+      />
+    </div>
   )
 }
 
