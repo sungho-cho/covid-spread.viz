@@ -3,7 +3,7 @@ import Slider from '@mui/material/Slider'
 
 interface DateSliderProps {
   date: Date,
-  setDate: (date: Date) => void
+  setDate: (date: Date) => void,
   firstDate: Date,
   lastDate: Date,
 }
@@ -37,8 +37,8 @@ const DateSlider = (props: DateSliderProps) => {
   }, [])
 
   const valueLabelFormat = (dateNumber: number) => {
-    const date = new Date(dateNumber)
-    return date.toLocaleDateString("en-US");
+    const newDate = new Date(dateNumber)
+    return newDate.toLocaleDateString("en-US");
   }
 
   const updateDate = (event: Event, newValue: number | number[]) => {
