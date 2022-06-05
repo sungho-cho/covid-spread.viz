@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { ThemeProvider } from '@mui/material/styles'
+import createTheme from '@mui/material/styles/createTheme'
 import Slider from '@mui/material/Slider'
 import './DateSlider.css'
 
@@ -19,6 +21,31 @@ const DateSlider = (props: DateSliderProps) => {
 
   const [marks, setMarks] = useState<Array<Mark>>([])
 
+  const ThemedSlider = createTheme({
+    components: {
+      MuiSlider: {
+        styleOverrides: {
+          root: {
+            color: 'rgba(255, 255, 255, 0.12)',
+            height: 8,
+          },
+          track: {
+            border: 'none',
+          },
+          thumb: {
+            height: 22,
+            width: 22,
+            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+            border: '2px solid',
+          },
+        }
+      }
+    },
+    palette: {
+      mode: 'dark',
+    },
+  })
+
   useEffect(() => {
     let markMonth = new Date(Date.UTC(firstDate.getUTCFullYear(), firstDate.getUTCMonth()))
     let lastMonth = new Date(Date.UTC(lastDate.getUTCFullYear(), lastDate.getUTCMonth()))
@@ -29,7 +56,7 @@ const DateSlider = (props: DateSliderProps) => {
       if (month == 1) {
         label = markMonth.getUTCFullYear().toString()
       } else {
-        label = month.toString()
+        label = ""
       }
       newMarks.push({ value: markMonth.getTime(), label: label })
       markMonth = new Date(Date.UTC(markMonth.getUTCFullYear(), markMonth.getUTCMonth() + 1))
@@ -50,19 +77,21 @@ const DateSlider = (props: DateSliderProps) => {
 
   return (
     <div className="date-slider">
-      <Slider
-        value={date.getTime()}
-        aria-label="Small steps"
-        defaultValue={firstDate.getTime()}
-        getAriaValueText={valueLabelFormat}
-        valueLabelFormat={valueLabelFormat}
-        step={86400000}
-        min={firstDate.getTime()}
-        max={lastDate.getTime()}
-        marks={marks}
-        valueLabelDisplay="auto"
-        onChange={updateDate}
-      />
+      <ThemeProvider theme={ThemedSlider}>
+        <Slider
+          value={date.getTime()}
+          aria-label="Small steps"
+          defaultValue={firstDate.getTime()}
+          getAriaValueText={valueLabelFormat}
+          valueLabelFormat={valueLabelFormat}
+          step={86400000}
+          min={firstDate.getTime()}
+          max={lastDate.getTime()}
+          marks={marks}
+          valueLabelDisplay="auto"
+          onChange={updateDate}
+        />
+      </ThemeProvider>
     </div>
   )
 }
