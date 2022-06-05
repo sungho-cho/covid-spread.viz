@@ -49,7 +49,7 @@ const DateSlider = (props: DateSliderProps) => {
   }
 
   return (
-    <div className="dateslider">
+    <div className="date-slider">
       <Slider
         value={date.getTime()}
         aria-label="Small steps"

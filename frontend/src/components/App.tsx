@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import "./App.css"
 import CircularProgress from '@mui/material/CircularProgress'
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import CovidMap from './CovidMap'
 import { getAllData } from '../api/grpc_client'
@@ -23,8 +24,17 @@ const App = () => {
 
   if (loading) return <div className="loading"><CircularProgress /></div>
 
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
   const props = { data, firstDate, lastDate }
-  return <CovidMap {...props} />
+  return (
+    <ThemeProvider theme={darkTheme}>
+      <CovidMap {...props} />
+    </ThemeProvider>
+  )
 }
 
 export default App;
