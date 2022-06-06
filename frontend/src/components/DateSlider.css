@@ -4,6 +4,19 @@
   bottom: 0;
   left: 0;
   width: 100%;
+  max-height: 90px;
+  padding: 12px 36px 36px 24px;
   box-sizing: border-box;
-  padding: 12px 60px 12px 60px;
+  display: inline-flex;
+}
+
+.date-buttons {
+  flex-grow: 1;
+  max-width: 140px;
+}
+
+.date-slider {
+  flex-grow: 2;
+  margin-top: 2.5px;
+  margin-left: 10px;
 }

@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from '@mui/material/styles'
 import createTheme from '@mui/material/styles/createTheme'
+import IconButton from '@mui/material/IconButton'
 import Slider, { SliderThumb } from '@mui/material/Slider'
 import CoronavirusIcon from '@mui/icons-material/Coronavirus'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import FastForwardIcon from '@mui/icons-material/FastForward'
+import FastRewindIcon from '@mui/icons-material/FastRewind'
 import './DateSlider.css'
 
 interface DateSliderProps {
@@ -24,6 +28,20 @@ const DateSlider = (props: DateSliderProps) => {
 
   const [marks, setMarks] = useState<Array<Mark>>([])
 
+  const ThemedButton = createTheme({
+    components: {
+      MuiIconButton: {
+        styleOverrides: {
+          root: {
+            ':hover': {
+              backgroundColor: 'unset',
+            }
+          }
+        }
+      }
+    }
+  })
+
   const ThemedSlider = createTheme({
     components: {
       MuiSlider: {
@@ -38,6 +56,12 @@ const DateSlider = (props: DateSliderProps) => {
           thumb: {
             backgroundColor: 'unset',
             '&.Mui-focusVisible': {
+              boxShadow: 'unset',
+            },
+            '&.Mui-active': {
+              boxShadow: 'unset',
+            },
+            ':hover': {
               boxShadow: 'unset',
             },
           },
@@ -73,6 +97,7 @@ const DateSlider = (props: DateSliderProps) => {
     setMarks(newMarks)
   }, [])
 
+  const iconColor = 'rgba(255, 255, 255, 0.8)'
   const valueLabelFormat = (dateNumber: number) => {
     const newDate = new Date(dateNumber)
     return newDate.toLocaleDateString("en-US");
@@ -87,29 +112,44 @@ const DateSlider = (props: DateSliderProps) => {
     return (
       <SliderThumb {...other}>
         {children}
-        <CoronavirusIcon sx={{ fontSize: 35, color: 'rgba(255, 255, 255, 0.5)' }} />
+        <CoronavirusIcon sx={{ fontSize: 35, color: iconColor }} />
       </SliderThumb>
     )
   }
 
   return (
     <div className="date-control">
-      <ThemeProvider theme={ThemedSlider}>
-        <Slider
-          value={date.getTime()}
-          aria-label="Small steps"
-          defaultValue={firstDate.getTime()}
-          getAriaValueText={valueLabelFormat}
-          valueLabelFormat={valueLabelFormat}
-          step={86400000}
-          min={firstDate.getTime()}
-          max={lastDate.getTime()}
-          marks={marks}
-          valueLabelDisplay="auto"
-          onChange={updateDate}
-          components={{ Thumb: VirusThumbComponent }}
-        />
-      </ThemeProvider>
+      <div className="date-buttons">
+        <ThemeProvider theme={ThemedButton}>
+          <IconButton aria-label="rewind">
+            <FastRewindIcon sx={{ color: iconColor }} />
+          </IconButton>
+          <IconButton aria-label="play">
+            <PlayArrowIcon sx={{ color: iconColor }} />
+          </IconButton>
+          <IconButton aria-label="forward">
+            <FastForwardIcon sx={{ color: iconColor }} />
+          </IconButton>
+        </ThemeProvider>
+      </div>
+      <div className="date-slider">
+        <ThemeProvider theme={ThemedSlider}>
+          <Slider
+            value={date.getTime()}
+            aria-label="Small steps"
+            defaultValue={firstDate.getTime()}
+            getAriaValueText={valueLabelFormat}
+            valueLabelFormat={valueLabelFormat}
+            step={86400000}
+            min={firstDate.getTime()}
+            max={lastDate.getTime()}
+            marks={marks}
+            valueLabelDisplay="auto"
+            onChange={updateDate}
+            components={{ Thumb: VirusThumbComponent }}
+          />
+        </ThemeProvider>
+      </div>
     </div>
   )
 }
