@@ -1,0 +1,21 @@
+.info-button {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  margin: 11px 4px 12px 12px;
+  padding-top: 3px;
+}
+
+#info-modal-name {
+  max-height: 22px;
+  font-weight: 900;
+}
+
+#info-modal-name > * {
+  margin: 0px 6px;
+}
+
+#info-modal-career {
+  font-weight: 400;
+}
