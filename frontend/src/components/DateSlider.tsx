@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from '@mui/material/styles'
 import createTheme from '@mui/material/styles/createTheme'
 import Slider, { SliderThumb } from '@mui/material/Slider'
+import CoronavirusIcon from '@mui/icons-material/Coronavirus'
 import './DateSlider.css'
 
 interface DateSliderProps {
@@ -86,7 +87,7 @@ const DateSlider = (props: DateSliderProps) => {
     return (
       <SliderThumb {...other}>
         {children}
-        <span className="material-icons">coronavirus</span>
+        <CoronavirusIcon sx={{ fontSize: 35, color: 'rgba(255, 255, 255, 0.5)' }} />
       </SliderThumb>
     )
   }
