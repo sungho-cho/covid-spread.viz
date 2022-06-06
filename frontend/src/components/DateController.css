@@ -13,7 +13,6 @@
 .date-buttons {
   flex-grow: 1;
   max-width: 140px;
-  margin-bottom: 40px;
 }
 
 .date-speedtext {
@@ -24,11 +23,11 @@
   justify-content: center;
   align-items: center;
   margin-left: 10px;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .date-slider {
   flex-grow: 3;
-  margin-top: 4px;
+  margin-top: 5px;
   margin-left: 40px;
 }
