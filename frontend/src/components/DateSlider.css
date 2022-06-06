@@ -1,5 +1,4 @@
-.date-slider {
-  /* padding: 6px 12px; */
+.date-control {
   z-index: 1;
   position: fixed;
   bottom: 0;
@@ -7,4 +6,10 @@
   width: 100%;
   box-sizing: border-box;
   padding: 12px 60px 12px 60px;
+}
+
+.material-icons {
+  /* color: lightslategray; */
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 35px !important;
 }

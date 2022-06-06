@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from '@mui/material/styles'
 import createTheme from '@mui/material/styles/createTheme'
-import Slider from '@mui/material/Slider'
+import Slider, { SliderThumb } from '@mui/material/Slider'
 import './DateSlider.css'
 
 interface DateSliderProps {
@@ -15,6 +15,8 @@ interface Mark {
   value: number,
   label: string,
 }
+
+interface VirusThumbComponentProps extends React.HTMLAttributes<unknown> { }
 
 const DateSlider = (props: DateSliderProps) => {
   const { date, setDate, firstDate, lastDate } = props
@@ -33,10 +35,16 @@ const DateSlider = (props: DateSliderProps) => {
             border: 'none',
           },
           thumb: {
-            height: 22,
-            width: 22,
-            backgroundColor: 'rgba(255, 255, 255, 0.5)',
-            border: '2px solid',
+            backgroundColor: 'unset',
+            '&.Mui-focusVisible': {
+              boxShadow: 'unset',
+            },
+          },
+          mark: {
+            width: '4px',
+            height: '4px',
+            borderRadius: '9999px',
+            backgroundColor: 'rgba(255, 255, 255, 0.40)',
           },
         }
       }
@@ -68,15 +76,23 @@ const DateSlider = (props: DateSliderProps) => {
     const newDate = new Date(dateNumber)
     return newDate.toLocaleDateString("en-US");
   }
-
   const updateDate = (event: Event, newValue: number | number[]) => {
     if (typeof newValue === 'number') {
       setDate(new Date(newValue))
     }
   }
+  const VirusThumbComponent = (props: VirusThumbComponentProps) => {
+    const { children, ...other } = props
+    return (
+      <SliderThumb {...other}>
+        {children}
+        <span className="material-icons">coronavirus</span>
+      </SliderThumb>
+    )
+  }
 
   return (
-    <div className="date-slider">
+    <div className="date-control">
       <ThemeProvider theme={ThemedSlider}>
         <Slider
           value={date.getTime()}
@@ -90,6 +106,7 @@ const DateSlider = (props: DateSliderProps) => {
           marks={marks}
           valueLabelDisplay="auto"
           onChange={updateDate}
+          components={{ Thumb: VirusThumbComponent }}
         />
       </ThemeProvider>
     </div>
