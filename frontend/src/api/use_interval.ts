@@ -1,5 +1,5 @@
 // Reference from https://overreacted.io/making-setinterval-declarative-with-react-hooks/
-import React, { useEffect, useRef, MutableRefObject } from 'react';
+import { useEffect, useRef, MutableRefObject } from 'react';
 
 type Callback = (input: void) => void
 

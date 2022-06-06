@@ -22,12 +22,12 @@
   text-align: center;
   justify-content: center;
   align-items: center;
-  margin-left: 10px;
+  margin-left: 15px;
   margin-top: 3px;
 }
 
 .date-slider {
   flex-grow: 3;
   margin-top: 5px;
-  margin-left: 40px;
+  margin-left: 35px;
 }
