@@ -14,14 +14,22 @@ const App = () => {
   const [lastDate, setLastDate] = useState<Date | null>(null)
 
   useEffect(() => {
-    getAllData((data: { [dateKey: number]: CountriesData }, firstDate: Date, lastDate: Date) => {
-      setData(data)
-      setFirstDate(firstDate)
-      setLastDate(lastDate)
-      setLoading(false)
-    })
+    tryFetchingData()
   }, [])
 
+  const tryFetchingData = () => {
+    getAllData(
+      (data: { [dateKey: number]: CountriesData }, firstDate: Date, lastDate: Date) => {
+        setData(data)
+        setFirstDate(firstDate)
+        setLastDate(lastDate)
+        setLoading(false)
+      },
+      () => {
+        setTimeout(() => tryFetchingData(), 5000)
+      }
+    )
+  }
   const darkTheme = createTheme({
     palette: {
       mode: 'dark',
