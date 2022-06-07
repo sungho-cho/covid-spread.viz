@@ -23,7 +23,7 @@
      
 .date-label {
   background-color: rgba(255, 255, 255, 0.12);
-  color: #fff;
+  color: #ffffff;
   padding: 2px 12px;
   font-weight: 900;
   z-index: 1;
@@ -32,5 +32,4 @@
   left: 0;
   margin: 16px;
   border-radius: 4px;
-  opacity: 0.8;
 }
