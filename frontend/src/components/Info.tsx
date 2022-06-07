@@ -1,18 +1,50 @@
 import { useState, memo } from 'react'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
+import EmailIcon from '@mui/icons-material/Email'
 import InfoIcon from '@mui/icons-material/Info'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
-import EmailIcon from '@mui/icons-material/Email'
+import ShareIcon from '@mui/icons-material/Share'
 import Modal from '@mui/material/Modal'
+import Popover from '@mui/material/Popover'
 import Typography from '@mui/material/Typography'
 import './Info.css'
 
+interface PopoverOrigin {
+  vertical: "bottom" | "center" | "top" | number,
+  horizontal: "left" | "center" | "right" | number,
+}
+
 const Info = () => {
   const [open, setOpen] = useState(false)
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [popoverOpen, setPopoverOpen] = useState(false)
+  const [popoverText, setPopoverText] = useState("")
+
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
+  const copyVizURL = () => {
+    navigator.clipboard.writeText(vizURL)
+    setPopoverText("Copied URL to clipboard")
+    setPopoverOpen(true)
+    setTimeout(() => setPopoverOpen(false), popoverDelay)
+  }
+  const copyEmail = () => {
+    navigator.clipboard.writeText(email)
+    setPopoverText("Copied email address to clipboard")
+    setPopoverOpen(true)
+    setTimeout(() => setPopoverOpen(false), popoverDelay)
+  }
+  const openURL = (url: string) => {
+    window.open(url, '_blank')?.focus()
+  }
+
+  const iconSize = '20px'
+  const popoverDelay = 1750
+  const vizURL = "example.com" // TODO: Change to website address
+  const email = "email" // TODO: Change to real email address
+  const githubURL = "https://github.com/sungho-cho"
+  const linkedinURL = "https://linkedin.com/in/sungho-cho/"
   const modalStyle = {
     position: 'absolute',
     top: '50%',
@@ -24,6 +56,14 @@ const Info = () => {
     p: 4,
     outline: 0,
     color: 'white',
+  }
+  const anchorOrigin: PopoverOrigin = {
+    vertical: "bottom",
+    horizontal: "center",
+  }
+  const transformOrigin: PopoverOrigin = {
+    vertical: "top",
+    horizontal: "center",
   }
 
   return (
@@ -40,13 +80,27 @@ const Info = () => {
         <Box sx={modalStyle}>
           <Typography id="info-modal-title" variant="h6" gutterBottom component="h2">
             Covid-19 Spread Visualizer
+            <IconButton aria-label="share" onClick={copyVizURL}>
+              <ShareIcon sx={{ fontSize: iconSize }} />
+            </IconButton>
+            <Popover open={popoverOpen} anchorOrigin={anchorOrigin} transformOrigin={transformOrigin}>
+              <Typography sx={{ p: 2 }}>{popoverText}</Typography>
+            </Popover>
           </Typography>
-          <Typography id="info-modal-name" variant="subtitle1" component="h3">
-            Sungho Cho
-            <GitHubIcon sx={{ fontSize: '20px' }} />
-            <LinkedInIcon sx={{ fontSize: '20px' }} />
-            <EmailIcon sx={{ fontSize: '20px' }} />
-          </Typography>
+          <div className="info-modal-name">
+            <Typography variant="subtitle1" component="h3">
+              Sungho Cho
+            </Typography>
+            <IconButton aria-label="github" onClick={() => openURL(githubURL)}>
+              <GitHubIcon sx={{ fontSize: iconSize }} />
+            </IconButton>
+            <IconButton aria-label="linkedin" onClick={() => openURL(linkedinURL)}>
+              <LinkedInIcon sx={{ fontSize: iconSize }} />
+            </IconButton>
+            <IconButton aria-label="email" onClick={copyEmail}>
+              <EmailIcon sx={{ fontSize: iconSize }} />
+            </IconButton>
+          </div>
           <Typography id="info-modal-career" variant="subtitle2" component="h4" gutterBottom>
             Carnegie Mellon '20 / Uber ATG / Aurora Innovation
           </Typography>
@@ -55,7 +109,7 @@ const Info = () => {
           </Typography>
         </Box>
       </Modal>
-    </div>
+    </div >
   )
 }
 

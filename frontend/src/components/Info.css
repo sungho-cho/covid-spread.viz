@@ -7,15 +7,31 @@
   padding-top: 3px;
 }
 
-#info-modal-name {
-  max-height: 22px;
+#info-modal-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 45px;
+}
+
+.info-modal-name {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 20px;
   font-weight: 900;
 }
 
-#info-modal-name > * {
-  margin: 0px 6px;
+.info-modal-name > * {
+  margin: 0px 5px;
 }
 
 #info-modal-career {
   font-weight: 400;
+}
+
+.info-popover {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
