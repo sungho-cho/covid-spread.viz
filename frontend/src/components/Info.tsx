@@ -43,7 +43,7 @@ const Info = () => {
   const iconSize = '20px'
   const popoverDelay = 1750
   const vizURL = "example.com" // TODO: Change to website address
-  const email = "email" // TODO: Change to real email address
+  const email = "sungh5c@gmail.com"
   const githubURL = "https://github.com/sungho-cho"
   const linkedinURL = "https://linkedin.com/in/sungho-cho/"
   const jhuURL = "https://github.com/CSSEGISandData/COVID-19"
