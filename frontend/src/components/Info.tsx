@@ -122,7 +122,7 @@ const Info = () => {
               (<Link href={jhuRecoveryURL} target="_blank" rel="noopener">view details</Link>).
             </Typography>
             <Typography variant="body2">
-              This website was developed with React.js, GoLang, Mapbox, gRPC, and Envoy.
+              This website was developed using React.js, GoLang, Mapbox, gRPC, and Envoy.
               The web application as well as the back-end server are not open-sourced,
               but you can checkout the GitHub repository to get a sense of the general project structure.
             </Typography>
