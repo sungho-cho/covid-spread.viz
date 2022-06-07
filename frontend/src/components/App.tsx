@@ -35,7 +35,7 @@ const App = () => {
       mode: 'dark',
     },
   });
-  const props = { data, firstDate, lastDate }
+  const props = { data: data!, firstDate: firstDate!, lastDate: lastDate! }
 
   return (
     <ThemeProvider theme={darkTheme}>
