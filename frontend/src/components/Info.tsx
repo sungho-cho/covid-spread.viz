@@ -94,11 +94,11 @@ const Info = () => {
             <Typography variant="subtitle1" component="h3" sx={{ fontWeight: 700 }}>
               Sungho Cho
             </Typography>
-            <IconButton aria-label="github" onClick={() => openURL(githubURL)}>
-              <GitHubIcon sx={{ fontSize: iconSize }} />
-            </IconButton>
             <IconButton aria-label="linkedin" onClick={() => openURL(linkedinURL)}>
               <LinkedInIcon sx={{ fontSize: iconSize }} />
+            </IconButton>
+            <IconButton aria-label="github" onClick={() => openURL(githubURL)}>
+              <GitHubIcon sx={{ fontSize: iconSize }} />
             </IconButton>
             <IconButton aria-label="email" onClick={copyEmail}>
               <EmailIcon sx={{ fontSize: iconSize }} />
@@ -109,7 +109,7 @@ const Info = () => {
           </Typography>
           <div id="info-modal-description">
             <Typography variant="body2">
-              This website's goal is to deliver fast visualization of historical data of COVID-19 since the outbreak to the present day.
+              This website's goal is to deliver a fast visualizer for the historical data of COVID-19 since the outbreak to the present day.
               It was built in order for us to better understand the tragic impact of the coronavirus pandemic over the world population.
             </Typography>
             <Typography variant="body2">
@@ -124,7 +124,7 @@ const Info = () => {
             <Typography variant="body2">
               This website was developed using React.js, GoLang, Mapbox, gRPC, and Envoy.
               The web application as well as the back-end server are not open-sourced,
-              but you can checkout the GitHub repository to get a sense of the general project structure.
+              but the GitHub repository is semi-public to give a sense of the general project structure.
             </Typography>
             <Typography variant="body2">
               Please feel free to email me with any feedback or questions :)
