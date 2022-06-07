@@ -30,12 +30,6 @@ const Info = () => {
     setPopoverOpen(true)
     setTimeout(() => setPopoverOpen(false), popoverDelay)
   }
-  const copyEmail = () => {
-    navigator.clipboard.writeText(email)
-    setPopoverText("Copied email address to clipboard")
-    setPopoverOpen(true)
-    setTimeout(() => setPopoverOpen(false), popoverDelay)
-  }
   const openURL = (url: string) => {
     window.open(url, '_blank')?.focus()
   }
@@ -43,7 +37,7 @@ const Info = () => {
   const iconSize = '20px'
   const popoverDelay = 1750
   const vizURL = "example.com" // TODO: Change to website address
-  const email = "sungh5c@gmail.com"
+  const emailURL = "mailto:sungh5c@gmail.com"
   const githubURL = "https://github.com/sungho-cho"
   const linkedinURL = "https://linkedin.com/in/sungho-cho/"
   const jhuURL = "https://github.com/CSSEGISandData/COVID-19"
@@ -100,7 +94,7 @@ const Info = () => {
             <IconButton aria-label="github" onClick={() => openURL(githubURL)}>
               <GitHubIcon sx={{ fontSize: iconSize }} />
             </IconButton>
-            <IconButton aria-label="email" onClick={copyEmail}>
+            <IconButton aria-label="email" onClick={() => openURL(emailURL)}>
               <EmailIcon sx={{ fontSize: iconSize }} />
             </IconButton>
           </div>
@@ -113,8 +107,7 @@ const Info = () => {
               It was built in order for us to better understand the tragic impact of the coronavirus pandemic over the world population.
             </Typography>
             <Typography variant="body2">
-              The data is from
-              <Link href={jhuURL} target="_blank" rel="noopener"> JHU CSSE COVID-19 Data</Link>.
+              The data is from <Link href={jhuURL} target="_blank" rel="noopener">JHU CSSE COVID-19 Data</Link>.
               It is updated daily when JHU CSSE publishes new data.
               Note that recovery data for United States is absent since December 14, 2020,
               as well as recovery data for all countries since August 5th, 2021,
@@ -127,7 +120,7 @@ const Info = () => {
               but the GitHub repository is semi-public to give a sense of the general project structure.
             </Typography>
             <Typography variant="body2">
-              Please feel free to email me with any feedback or questions :)
+              Please feel free to <Link href={emailURL} target="_blank" rel="noopener"> email me</Link> with any feedback or questions :)
             </Typography>
           </div>
         </Box>
