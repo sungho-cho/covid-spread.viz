@@ -22,17 +22,16 @@ const App = () => {
     })
   }, [])
 
-  if (loading) return <div className="loading"><CircularProgress /></div>
-
   const darkTheme = createTheme({
     palette: {
       mode: 'dark',
     },
   });
   const props = { data, firstDate, lastDate }
+
   return (
     <ThemeProvider theme={darkTheme}>
-      <CovidMap {...props} />
+      {loading ? <div className="loading"><CircularProgress /></div> : <CovidMap {...props} />}
     </ThemeProvider>
   )
 }

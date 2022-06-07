@@ -1,3 +1,17 @@
+.map-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #19191A;
+  z-index: 10;
+}
+
 .map-container {
   position: absolute;
   top: 0;
