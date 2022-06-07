@@ -1,0 +1,7 @@
+# private
+backend/utils/fetch.go
+frontend/src/api/mapbox_config.ts
+frontend/src/components/DateController.tsx
+frontend/src/components/DataSelect.tsx
+frontend/src/components/Legend.tsx
+frontend/src/protos/*
