@@ -96,6 +96,11 @@ func main() {
 
 	// Set up a gRPC server
 	port := os.Getenv("PORT")
+	if port == "" {
+		port = "9090"
+		log.Printf("Defaulting to port %s", port)
+	}
+
 	lis, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
