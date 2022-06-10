@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net"
+	"os"
 	"time"
 
 	"github.com/golang/protobuf/proto"
@@ -12,8 +13,6 @@ import (
 	"github.com/sungho-cho/covid-spread.viz/backend/utils"
 	"google.golang.org/grpc"
 )
-
-const port = "9090"
 
 type covidDataServer struct {
 	pb.CovidDataServer
@@ -96,6 +95,7 @@ func main() {
 	go utils.Fetch()
 
 	// Set up a gRPC server
+	port := os.Getenv("PORT")
 	lis, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
