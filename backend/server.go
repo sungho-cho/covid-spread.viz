@@ -103,14 +103,14 @@ func main() {
 
 	lis, err := net.Listen("tcp", ":"+port)
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Fatalf("Failed to listen: %v", err)
 	}
 	grpcServer := grpc.NewServer(grpc.MaxRecvMsgSize(1024*1024*10), grpc.MaxSendMsgSize(1024*1024*10))
 	pb.RegisterCovidDataServer(grpcServer, &covidDataServer{})
 
 	// Start the gRPC server
-	log.Printf("start gRPC server on %s port", port)
+	log.Printf("Starting gRPC server on %s port", port)
 	if err := grpcServer.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %s", err)
+		log.Fatalf("Failed to serve: %s", err)
 	}
 }
