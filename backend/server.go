@@ -4,14 +4,15 @@ import (
 	"context"
 	"io/ioutil"
 	"log"
-	"net"
+	"net/http"
 	"os"
 	"time"
 
-	"github.com/golang/protobuf/proto"
+	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	pb "github.com/sungho-cho/covid-spread.viz/backend/protos"
 	"github.com/sungho-cho/covid-spread.viz/backend/utils"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/proto"
 )
 
 type covidDataServer struct {
@@ -90,6 +91,13 @@ func generateEmptyData(firstDate time.Time, fullData *pb.CountriesData) *pb.Coun
 	return &pb.CountriesData{Date: utils.DateToProto(firstDate), Countries: countries}
 }
 
+func allowCors(resp http.ResponseWriter, req *http.Request) {
+	resp.Header().Set("Access-Control-Allow-Origin", "*")
+	resp.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	resp.Header().Set("Access-Control-Expose-Headers", "grpc-status, grpc-message")
+	resp.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, XMLHttpRequest, x-user-agent, x-grpc-web, grpc-status, grpc-message")
+}
+
 func main() {
 	// Fetch covid data for all countries and save the data locally
 	go utils.Fetch()
@@ -101,16 +109,25 @@ func main() {
 		log.Printf("Defaulting to port %s", port)
 	}
 
-	lis, err := net.Listen("tcp", ":"+port)
-	if err != nil {
-		log.Fatalf("Failed to listen: %v", err)
-	}
 	grpcServer := grpc.NewServer(grpc.MaxRecvMsgSize(1024*1024*10), grpc.MaxSendMsgSize(1024*1024*10))
 	pb.RegisterCovidDataServer(grpcServer, &covidDataServer{})
 
 	// Start the gRPC server
+	wrapServer := grpcweb.WrapServer(grpcServer)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", func(resp http.ResponseWriter, req *http.Request) {
+		allowCors(resp, req)
+		if wrapServer.IsGrpcWebRequest(req) || wrapServer.IsAcceptableGrpcCorsRequest(req) {
+			wrapServer.ServeHTTP(resp, req)
+		}
+	})
+	grpcWebServer := &http.Server{
+		Handler: mux,
+		Addr:    ":" + port,
+	}
+	// Start the gRPC-web server
 	log.Printf("Starting gRPC server on %s port", port)
-	if err := grpcServer.Serve(lis); err != nil {
-		log.Fatalf("Failed to serve: %s", err)
+	if err := grpcWebServer.ListenAndServe(); err != nil {
+		log.Fatalf("Failed to serve gRPC web server: %s", err)
 	}
 }
