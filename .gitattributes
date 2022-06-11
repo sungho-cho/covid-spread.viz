@@ -1,2 +1,6 @@
 # Exclude auto-generated Javascript protobuf file from language stats
 *_pb.js linguist-vendored
+
+# Exclude react's default config and script files from language stats
+frontend/config/* linguist-vendored
+frontend/scripts/* linguist-vendored
