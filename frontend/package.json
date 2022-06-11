@@ -25,14 +25,15 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "@svgr/webpack": "^6.2.1"
+    "@svgr/webpack": "^6.2.1",
+    "worker-loader": "^3.0.8"
   },
   "overrides": {
     "@svgr/webpack": "$@svgr/webpack"
   },
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts --openssl-legacy-provider build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
