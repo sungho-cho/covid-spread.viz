@@ -123,6 +123,7 @@ func Fetch() {
 			storeAllData(countriesDataList)
 			FinalDate = NextDay(FinalDate)
 		}
+		time.Sleep(time.Minute)
 	}
 }
 
