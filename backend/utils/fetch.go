@@ -3,29 +3,16 @@ package utils
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"log"
-	"os"
 	"time"
 
-	"github.com/golang/protobuf/proto"
 	pb "github.com/sungho-cho/covid-spread.viz/backend/protos"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"google.golang.org/protobuf/proto"
 )
-
-const mdbURL = "mongodb+srv://readonly:readonly@covid-19.hip2i.mongodb.net/covid19"
-
-var FirstDate time.Time = time.Date(2020, 1, 22, 0, 0, 0, 0, time.UTC)
-var FinalDate time.Time = FirstDate // gets incremented
-
-const protoDir string = "/covid-spread.viz/data/" // is prepended by $HOME
-
-// MongoDB Collections
-var countries_summary *mongo.Collection
-var metadata *mongo.Collection
 
 // CountriesSummary represents the document structure of documents in the
 // 'countries_summary' collection.
@@ -51,11 +38,33 @@ type CountriesSummary struct {
 	Recovered  int32
 }
 
+func (cs *CountriesSummary) toProto() *pb.CountryData {
+	return &pb.CountryData{
+		Country:   cs.Country,
+		Iso3S:     cs.CountryISO3S,
+		Date:      DateToProto(cs.Date),
+		Confirmed: cs.Confirmed,
+		Recovered: cs.Recovered,
+		Deaths:    cs.Deaths,
+	}
+}
+
 // Metadata represents (a subset of) the data stored in the metadata
 // collection in a single document.
 type Metadata struct {
 	LastDate time.Time `bson:"last_date"`
 }
+
+const mdbURL = "mongodb+srv://readonly:readonly@covid-19.hip2i.mongodb.net/covid19"
+
+var FirstDate time.Time = time.Date(2020, 1, 22, 0, 0, 0, 0, time.UTC)
+var FinalDate time.Time = FirstDate // gets incremented
+
+const GCSObjName = "covid_data"
+
+// MongoDB Collections
+var countries_summary *mongo.Collection
+var metadata *mongo.Collection
 
 func init() {
 	// Connect to MongoDB
@@ -76,25 +85,42 @@ func init() {
 // Fetch covid cases data from MongoDB, convert the data to protobuf
 // and save them to local directory, to be used by the gRPC service
 func Fetch() {
-	// Download data for up until three days ago
-	for ; FinalDate.Before(threeDaysAgo(time.Now().UTC())); FinalDate = NextDay(FinalDate) {
-		fetchAndStoreDataForDate(FinalDate)
+	var countriesDataList []*pb.CountriesData
+
+	// If there's pre-existing data on GCS, read in the data so that we can append to it
+	if DoesExist(GCSObjName) {
+		in, err := ReadObject(GCSObjName)
+		if err != nil {
+			log.Fatalf("Failed to read all data: %s", err)
+		}
+		allData := &pb.GetAllDataResponse{}
+		if err := proto.Unmarshal(in, allData); err != nil {
+			log.Printf("Failed to parse all data: %s", err)
+		}
+		countriesDataList = allData.GetData()
+		FinalDate = NextDay(DateFromProto(allData.GetLastDate()))
 	}
 
-	// Check if MongoDB owns updated data for the next date
-	// This is run separately from the first loop to avoid
-	// accumulative network cost of getLastDate()
+	// Fetch all countries data that is up on MongoDB but not included in GCS-stored object
+	// Store the data after the data fetching process is over
 	for dbDate := GetLastDate(); FinalDate.Before(dbDate) || FinalDate.Equal(dbDate); FinalDate = NextDay(FinalDate) {
-		fetchAndStoreDataForDate(FinalDate)
+		log.Println("Fetching countries data for:", FinalDate.Format("2006-01-02"))
+		countriesData := fetchCountriesSummary(FinalDate)
+		countriesDataList = append(countriesDataList, countriesData)
 	}
+	storeAllData(countriesDataList)
 
 	// Wait for MongoDB to contain new data for the next date
-	// Onece it's updated, fetch and store the data and continue waiting
+	// Once it's updated, fetch and store the data and continue waiting
 	// TODO: Replace this functionality with CI
 	for {
+		// TODO: Timeout
 		dbDate := GetLastDate()
 		if FinalDate.Equal(dbDate) {
-			fetchAndStoreDataForDate(FinalDate)
+			log.Println("Fetching countries data for:", FinalDate.Format("2006-01-02"))
+			countriesData := fetchCountriesSummary(FinalDate)
+			countriesDataList = append(countriesDataList, countriesData)
+			storeAllData(countriesDataList)
 			FinalDate = NextDay(FinalDate)
 		}
 	}
@@ -119,18 +145,13 @@ func DateToProto(date time.Time) *pb.Date {
 	}
 }
 
-// Get a corresponding file path for the given date
-func GetFilePath(date time.Time) string {
-	// Get/greate a directory
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
-	fullDir := homeDir + protoDir
-	os.MkdirAll(fullDir, os.ModePerm)
-	// Get file path
-	filePath := fullDir + date.Format("2006-01-02")
-	return filePath
+func DateFromProto(protoDate *pb.Date) time.Time {
+	return time.Date(
+		int(protoDate.GetYear()),
+		time.Month(protoDate.GetMonth()),
+		int(protoDate.GetDay()),
+		0, 0, 0, 0, time.UTC,
+	)
 }
 
 func PreviousDay(date time.Time) time.Time {
@@ -141,15 +162,47 @@ func NextDay(date time.Time) time.Time {
 	return date.AddDate(0, 0, 1)
 }
 
-// Fetch and store country data locally for a certain date
-func fetchAndStoreDataForDate(date time.Time) {
-	// No need to fetch new data if local copy already exists
-	if doesCountriesDataExist(date) {
-		log.Println("Skipping download for pre-existing countries data for:", date.Format("2006-01-02"))
-		return
+// Store marshalled GetAllDataResponse proto to GCS bucket using the given data
+func storeAllData(countiresDataList []*pb.CountriesData) {
+	// Prepend empty data to countiresDataList
+	firstProtoDate := countiresDataList[0].GetDate()
+	firstDate := DateFromProto(firstProtoDate)
+	emptyData := generateEmptyData(PreviousDay(firstDate), countiresDataList[0])
+	countiresDataList = append([]*pb.CountriesData{emptyData}, countiresDataList...)
+
+	// Initialize GetAllDataResponse proto instance
+	lastProtoDate := countiresDataList[len(countiresDataList)-1].GetDate()
+	allData := &pb.GetAllDataResponse{
+		FirstDate: firstProtoDate,
+		LastDate:  lastProtoDate,
+		Data:      countiresDataList,
 	}
-	countriesData := fetchCountriesSummary(date)
-	storeCountriesData(countriesData, date)
+	// Save the proto to GCS Bucket
+	out, err := proto.Marshal(allData)
+	if err != nil {
+		log.Fatalf("Failed to encode all data: %s", err)
+	}
+	if err := WriteObject(GCSObjName, out); err != nil {
+		log.Fatalf("Failed to store all data: %s", err)
+	} else {
+		log.Println("Successfully saved all data")
+	}
+}
+
+func generateEmptyData(date time.Time, fullData *pb.CountriesData) *pb.CountriesData {
+	var countries []*pb.CountryData
+	for _, country := range fullData.Countries {
+		emptyCountry := &pb.CountryData{
+			Country:   country.Country,
+			Iso3S:     country.Iso3S,
+			Date:      DateToProto(date),
+			Confirmed: 0,
+			Recovered: 0,
+			Deaths:    0,
+		}
+		countries = append(countries, emptyCountry)
+	}
+	return &pb.CountriesData{Date: DateToProto(date), Countries: countries}
 }
 
 // Fetch data from MongoDB's 'countries_summary' collection
@@ -177,41 +230,4 @@ func fetchCountriesSummary(date time.Time) *pb.CountriesData {
 		Countries: countries,
 	}
 	return countriesData
-}
-
-// Return true if local countries data exist for the given date; false otherwise
-func doesCountriesDataExist(date time.Time) bool {
-	filePath := GetFilePath(date)
-	_, err := os.Stat(filePath)
-	return !os.IsNotExist(err)
-}
-
-// Save the protobuf instance to a local directory
-func storeCountriesData(countriesData *pb.CountriesData, date time.Time) {
-	// Save a marshalled countries proto to a file
-	filePath := GetFilePath(date)
-	out, err := proto.Marshal(countriesData)
-	if err != nil {
-		log.Fatalln("Failed to encode countries data:", err)
-	}
-	if err := ioutil.WriteFile(filePath, out, 0644); err != nil {
-		log.Fatalln("Failed to write countries data:", err)
-	} else {
-		log.Println("Successfully saved countries data for:", date.Format("2006-01-02"))
-	}
-}
-
-func (cs *CountriesSummary) toProto() *pb.CountryData {
-	return &pb.CountryData{
-		Country:   cs.Country,
-		Iso3S:     cs.CountryISO3S,
-		Date:      DateToProto(cs.Date),
-		Confirmed: cs.Confirmed,
-		Recovered: cs.Recovered,
-		Deaths:    cs.Deaths,
-	}
-}
-
-func threeDaysAgo(date time.Time) time.Time {
-	return date.AddDate(0, 0, -3)
 }

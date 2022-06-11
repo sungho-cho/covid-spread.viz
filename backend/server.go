@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -20,41 +19,27 @@ type covidDataServer struct {
 }
 
 func (s *covidDataServer) GetAllData(ctx context.Context, empty_req *pb.Empty) (*pb.GetAllDataResponse, error) {
-	var data []*pb.CountriesData
-	lastDate := utils.GetLastDate()
-	firstDate := utils.PreviousDay(utils.FirstDate)
-	for date := utils.FirstDate; date.Before(lastDate) || date == lastDate; date = utils.NextDay(date) {
-		filePath := utils.GetFilePath(date)
-		in, err := ioutil.ReadFile(filePath)
-		if err != nil {
-			log.Println("Error reading file for date", date, ":", err)
-			continue
-		}
-		countriesData := &pb.CountriesData{}
-		if err := proto.Unmarshal(in, countriesData); err != nil {
-			log.Println("Failed to parse countries data for date", date, ":", err)
-			continue
-		}
-		// add empty data for the day before DB's first date
-		if len(data) == 0 {
-			data = append(data, generateEmptyData(firstDate, countriesData))
-		}
-		data = append(data, countriesData)
+	in, err := utils.ReadObject(utils.GCSObjName)
+	if err != nil {
+		log.Fatalf("Failed to read all data: %s", err)
 	}
-	log.Println("GetAllData successfully sending proto for:", firstDate, "~", lastDate)
-	return &pb.GetAllDataResponse{
-		FirstDate: utils.DateToProto(firstDate),
-		LastDate:  utils.DateToProto(lastDate),
-		Data:      data,
-	}, nil
+	allData := &pb.GetAllDataResponse{}
+	if err := proto.Unmarshal(in, allData); err != nil {
+		log.Printf("Failed to parse all data: %s", err)
+	}
+	return allData, nil
 }
 
 func (s *covidDataServer) GetCountriesData(ctx context.Context, req *pb.GetCountriesDataRequest) (*pb.GetCountriesDataResponse, error) {
 	date := time.Date(int(req.Date.Year), time.Month(req.Date.Month), int(req.Date.Day), 0, 0, 0, 0, time.UTC)
-	filePath := utils.GetFilePath(date)
-	in, err := ioutil.ReadFile(filePath)
+	dateStr := date.Format("2006-01-02")
+	if !utils.DoesExist(dateStr) {
+		log.Printf("Countries data for %s does not exist", dateStr)
+		return &pb.GetCountriesDataResponse{}, nil
+	}
+	in, err := utils.ReadObject(dateStr)
 	if err != nil {
-		log.Println("Error reading file:", err)
+		log.Println("Error reading GCS object for date", dateStr, ":", err)
 		return &pb.GetCountriesDataResponse{}, nil
 	}
 	countriesData := &pb.CountriesData{}
@@ -73,22 +58,6 @@ func (s *covidDataServer) GetMostRecentDate(ctx context.Context, empty_req *pb.E
 	lastDate := utils.GetLastDate()
 	log.Println("GetMostRecentDate successfully sending proto:", lastDate)
 	return utils.DateToProto(lastDate), nil
-}
-
-func generateEmptyData(firstDate time.Time, fullData *pb.CountriesData) *pb.CountriesData {
-	var countries []*pb.CountryData
-	for _, country := range fullData.Countries {
-		emptyCountry := &pb.CountryData{
-			Country:   country.Country,
-			Iso3S:     country.Iso3S,
-			Date:      utils.DateToProto(firstDate),
-			Confirmed: 0,
-			Recovered: 0,
-			Deaths:    0,
-		}
-		countries = append(countries, emptyCountry)
-	}
-	return &pb.CountriesData{Date: utils.DateToProto(firstDate), Countries: countries}
 }
 
 func allowCors(resp http.ResponseWriter, req *http.Request) {
