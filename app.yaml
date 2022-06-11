@@ -1,0 +1,12 @@
+runtime: nodejs16
+env: standard
+service: covid-spread-viz-react
+handlers:
+  - url: /static
+    static_dir: frontend/build/static
+  - url: /(.*\..+)$
+    static_files: frontend/build/\1
+    upload: frontend/build/(.*\..+)$
+  - url: /.*
+    static_files: frontend/build/index.html
+    upload: frontend/build/index.html
