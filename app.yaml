@@ -1,6 +1,5 @@
 runtime: nodejs16
 env: standard
-service: covid-spread-viz-react
 handlers:
   - url: /static
     static_dir: frontend/build/static
