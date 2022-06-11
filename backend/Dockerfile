@@ -13,4 +13,5 @@ COPY --from=builder /app/grpc-server /app/grpc-server
 
 EXPOSE 9090
 EXPOSE 443
+EXPOSE 8080
 CMD ["/app/grpc-server"]
