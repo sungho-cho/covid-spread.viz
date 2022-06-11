@@ -1,4 +1,4 @@
-import { Empty, Date as ProtoDate, GetCountriesDataRequest, CountriesData, GetAllDataResponse } from "../protos/covid_data_pb";
+import { Empty, Date as ProtoDate, GetCountriesDataRequest, CountriesData } from "../protos/covid_data_pb";
 import { CovidDataClient } from "../protos/Covid_dataServiceClientPb";
 
 const grpcClient = new CovidDataClient('https://grpcweb-server-yb22fhpg5a-wl.a.run.app')

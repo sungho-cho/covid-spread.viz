@@ -15,7 +15,7 @@ const App = () => {
 
   useEffect(() => {
     tryFetchingData()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const tryFetchingData = () => {
     getAllData(

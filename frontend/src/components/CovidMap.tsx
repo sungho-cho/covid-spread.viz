@@ -151,7 +151,7 @@ const CovidMap = (props: CovidMapProps) => {
       map.current!.once('idle', () => { setLoading(false) })
     })
     return () => map.current!.remove(); // clean up on unmount
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!map.current! || !map.current!.isStyleLoaded()) return;
@@ -166,7 +166,7 @@ const CovidMap = (props: CovidMapProps) => {
       const text = getPopupText(hoveredFeature.current!.properties!.name_en, featureState)
       popup.current!.setHTML(text).addTo(map.current!)
     }
-  }, [date])
+  }, [date]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!map.current! || !map.current!.isStyleLoaded()) return;
@@ -181,7 +181,7 @@ const CovidMap = (props: CovidMapProps) => {
 
   useEffect(() => {
     const speed = speedOptions[speedIdx]
-    if (speed == 0) setDelay(null)
+    if (speed === 0) setDelay(null)
     else setDelay(Math.abs(1000 / speed))
   }, [speedIdx])
 
@@ -207,9 +207,9 @@ const CovidMap = (props: CovidMapProps) => {
       `Recovered: ${featureState.recovered ? featureState.recovered.toLocaleString('en-US') : '0'}`
     let deathsTxt =
       `Deaths: ${featureState.deaths ? featureState.deaths.toLocaleString('en-US') : '0'}`
-    confirmedTxt = displayDataRef.current == "confirmed" ? `<b>${confirmedTxt}</b>` : confirmedTxt
-    recoveredTxt = displayDataRef.current == "recovered" ? `<b>${recoveredTxt}</b>` : recoveredTxt
-    deathsTxt = displayDataRef.current == "deaths" ? `<b>${deathsTxt}</b>` : deathsTxt
+    confirmedTxt = displayDataRef.current === "confirmed" ? `<b>${confirmedTxt}</b>` : confirmedTxt
+    recoveredTxt = displayDataRef.current === "recovered" ? `<b>${recoveredTxt}</b>` : recoveredTxt
+    deathsTxt = displayDataRef.current === "deaths" ? `<b>${deathsTxt}</b>` : deathsTxt
     return `
       <b>${countryName}</b><br>
       ${confirmedTxt}<br>
