@@ -1,5 +1,8 @@
 import { useRef, useEffect, useState } from 'react'
-import mapboxgl from 'mapbox-gl'
+// @ts-ignore
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl'
+// @ts-ignore
+import MapboxWorker from 'mapbox-gl/dist/mapbox-gl-csp-worker';
 import 'mapbox-gl/dist/mapbox-gl.css'
 import CircularProgress from '@mui/material/CircularProgress'
 import Typography from '@mui/material/Typography';
@@ -12,6 +15,7 @@ import Info from './Info'
 import Legend from './Legend'
 import './CovidMap.css';
 
+mapboxgl.workerClass = MapboxWorker
 mapboxgl.accessToken = MAPBOX_TOKEN
 
 interface CovidMapProps {
@@ -24,6 +28,14 @@ interface FeatureState {
   confirmed: number,
   recovered: number,
   deaths: number,
+}
+
+interface MapboxMouseEvent {
+  lngLat: {
+    lng: number,
+    lat: number
+  },
+  features: Array<mapboxgl.feature>,
 }
 
 // number of days of data to show per second (e.g. 5 means 5 days per second)
@@ -101,7 +113,7 @@ const CovidMap = (props: CovidMapProps) => {
         2.0,
         0.0,
       ])
-      map.current!.on('mousemove', 'country-layer', (e) => {
+      map.current!.on('mousemove', 'country-layer', (e: MapboxMouseEvent) => {
         // Highlight on hover
         if (hoveredFeature.current && hoveredFeature.current.id === e.features![0].id) {
           popup.current!.setLngLat([e.lngLat.lng, e.lngLat.lat])

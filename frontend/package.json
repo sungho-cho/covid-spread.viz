@@ -14,7 +14,6 @@
     "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.1",
-    "@types/mapbox-gl": "^2.7.2",
     "@types/node": "^16.11.36",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.5",
@@ -72,6 +71,7 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^6.2.1",
+    "@types/mapbox-gl": "^2.7.3",
     "worker-loader": "^3.0.8"
   },
   "overrides": {
