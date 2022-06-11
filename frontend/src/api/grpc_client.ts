@@ -1,7 +1,7 @@
 import { Empty, Date as ProtoDate, GetCountriesDataRequest, CountriesData, GetAllDataResponse } from "../protos/covid_data_pb";
 import { CovidDataClient } from "../protos/Covid_dataServiceClientPb";
 
-const grpcClient = new CovidDataClient('http://localhost:8080');
+const grpcClient = new CovidDataClient('https://grpcweb-server-yb22fhpg5a-wl.a.run.app')
 
 export const getAllData = (
   callback: (data: { [dateKey: number]: CountriesData }, firstDate: Date, lastDate: Date) => void,
