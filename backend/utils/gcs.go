@@ -21,6 +21,7 @@ func init() {
 	bkt = client.Bucket(bucketName)
 }
 
+// Return true if an object with the given name exists on GCS bucket
 func DoesExist(objName string) bool {
 	obj := bkt.Object(objName)
 	_, err := obj.NewReader(ctx)
@@ -31,6 +32,7 @@ func DoesExist(objName string) bool {
 	return err == nil || err != storage.ErrObjectNotExist
 }
 
+// Read from GCS object and return its data
 func ReadObject(objName string) ([]byte, error) {
 	obj := bkt.Object(objName)
 	r, err := obj.NewReader(ctx)
@@ -47,6 +49,7 @@ func ReadObject(objName string) ([]byte, error) {
 	return body, nil
 }
 
+// Write to GCS object with the given data
 func WriteObject(objName string, data []byte) error {
 	obj := bkt.Object(objName)
 	w := obj.NewWriter(ctx)

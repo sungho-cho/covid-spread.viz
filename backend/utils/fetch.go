@@ -190,6 +190,7 @@ func storeAllData(countiresDataList []*pb.CountriesData) {
 	}
 }
 
+// Generate CountriesData with empty fields, based on the given fullData
 func generateEmptyData(date time.Time, fullData *pb.CountriesData) *pb.CountriesData {
 	var countries []*pb.CountryData
 	for _, country := range fullData.Countries {

@@ -81,7 +81,7 @@ func main() {
 	grpcServer := grpc.NewServer(grpc.MaxRecvMsgSize(1024*1024*10), grpc.MaxSendMsgSize(1024*1024*10))
 	pb.RegisterCovidDataServer(grpcServer, &covidDataServer{})
 
-	// Start the gRPC server
+	// Wrap the gRPC server into a gRPC-web server
 	wrapServer := grpcweb.WrapServer(grpcServer)
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(resp http.ResponseWriter, req *http.Request) {
