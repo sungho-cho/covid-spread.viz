@@ -103,18 +103,22 @@ func Fetch() {
 
 	// Fetch all countries data that is up on MongoDB but not included in GCS-stored object
 	// Store the data after the data fetching process is over
+	listUpdated := false
 	for dbDate := GetLastDate(); FinalDate.Before(dbDate) || FinalDate.Equal(dbDate); FinalDate = NextDay(FinalDate) {
 		log.Println("Fetching countries data for:", FinalDate.Format("2006-01-02"))
 		countriesData := fetchCountriesSummary(FinalDate)
 		countriesDataList = append(countriesDataList, countriesData)
+		listUpdated = true
 	}
-	storeAllData(countriesDataList)
+	if listUpdated {
+		storeAllData(countriesDataList)
+	}
 
 	// Wait for MongoDB to contain new data for the next date
 	// Once it's updated, fetch and store the data and continue waiting
 	// TODO: Replace this functionality with CI
+	log.Println("Waiting for new data on MongoDB...")
 	for {
-		// TODO: Timeout
 		dbDate := GetLastDate()
 		if FinalDate.Equal(dbDate) {
 			log.Println("Fetching countries data for:", FinalDate.Format("2006-01-02"))
@@ -122,6 +126,7 @@ func Fetch() {
 			countriesDataList = append(countriesDataList, countriesData)
 			storeAllData(countriesDataList)
 			FinalDate = NextDay(FinalDate)
+			log.Println("Waiting for new data on MongoDB...")
 		}
 		time.Sleep(time.Minute)
 	}
