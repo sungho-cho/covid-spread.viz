@@ -39,6 +39,7 @@ const Info = () => {
   const vizURL = "example.com" // TODO: Change to website address
   const emailURL = "mailto:sungh5c@gmail.com"
   const githubURL = "https://github.com/sungho-cho"
+  const repoURL = "https://github.com/sungho-cho/covid-spread.viz"
   const linkedinURL = "https://linkedin.com/in/sungho-cho/"
   const jhuURL = "https://github.com/CSSEGISandData/COVID-19"
   const jhuRecoveryURL = "https://github.com/CSSEGISandData/COVID-19/issues/4465"
@@ -115,9 +116,10 @@ const Info = () => {
               (<Link href={jhuRecoveryURL} target="_blank" rel="noopener">view details</Link>).
             </Typography>
             <Typography variant="body2">
-              This website was developed using React.js, GoLang, Mapbox, gRPC, and Envoy.
-              The web application as well as the back-end server are not open-sourced,
-              but the GitHub repository is semi-public to give a sense of the general project structure.
+              This website was developed using React.js, GoLang, Mapbox, and gRPC.
+              The web application and the back-end server are not fully open-sourced,
+              but the <Link href={repoURL} target="_blank" rel="noopener">GitHub repository</Link> is
+              semi-public to introduce the general project structure and the tech stack.
             </Typography>
             <Typography variant="body2">
               Please feel free to <Link href={emailURL} target="_blank" rel="noopener"> email me</Link> with any feedback or questions :)
