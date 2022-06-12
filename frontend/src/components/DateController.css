@@ -5,29 +5,25 @@
   left: 0;
   width: 100%;
   max-height: 90px;
-  padding: 12px 36px 36px 24px;
+  padding: 12px 36px 90px 36px;
   box-sizing: border-box;
   display: inline-flex;
 }
 
 .date-buttons {
   flex-grow: 1;
-  max-width: 140px;
+  max-width: 60px;
 }
 
-.date-speedtext {
-  display: flex;
+.date-speed-input {
   flex-grow: 2;
-  max-width: 30px;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  margin-left: 15px;
-  margin-top: 3px;
+  max-width: 85px;
+  margin-left: 30px;
+  margin-top: 7px;
 }
 
 .date-slider {
   flex-grow: 3;
-  margin-top: 5px;
+  margin-top: 10px;
   margin-left: 35px;
 }
