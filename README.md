@@ -18,7 +18,7 @@ It is built using React.js, GoLang, Mapbox, and gRPC. The web application and th
 - Front-end: React.js, TypeScript, Mapbox, Google App Engine, gRPC-web
 
 ## Data
-The original data source is John Hopkins University CSSE's [Covid-19 DataSet](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data).
+The original data source is John Hopkins University CSSE's [COVID-19 DataSet](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data).
 Instead of directly parsing the CSV data from JHU CSSE, the data-fetching microservice pulls data from MongoDB Atlas that has unmodified, frequently updated copy of the JHU data. Check this [blog post](https://www.mongodb.com/developer/products/atlas/johns-hopkins-university-covid-19-data-atlas/) for more details about how MongoDB hosts a free service that provides COVID-19 dataset.
 
 Note that recovery data for United States is absent since December 14, 2020, as well as recovery data for all countries since August 5th, 2021.
