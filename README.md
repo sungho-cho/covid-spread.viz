@@ -6,12 +6,12 @@
 
 It is built using React.js, GoLang, Mapbox, and gRPC. The web application and the back-end server are not fully open-sourced, but the repository is semi-public to introduce the general project structure and the tech stack. See [Open Source](#open-source) section for more details.
 
-<img src="https://user-images.githubusercontent.com/46757971/172483410-9069e2e0-c2e9-483c-b645-b4674f951d1b.gif" width=50% height=50%>
+<img src="https://user-images.githubusercontent.com/46757971/172483410-9069e2e0-c2e9-483c-b645-b4674f951d1b.gif" width=60% height=60%>
 
 
 ## Tech Stack
 
-<img src="https://user-images.githubusercontent.com/46757971/173222371-538e6579-1e4f-47b5-824e-75437929e7c1.png" width=50% height=50%>
+<img src="https://user-images.githubusercontent.com/46757971/173222371-538e6579-1e4f-47b5-824e-75437929e7c1.png" width=60% height=60%>
 
 - Data: MongoDB Atlas, JHU CSSE Covid-19 DataSet
 - Back-end: GoLang, Google Cloud Run, gRPC, gRPC-web, Protocol Buffers
@@ -28,5 +28,6 @@ JHU CSSE stopped tracking recovery data without providing much context, but you 
 This repository is not fully open-sourced (yet). Some of the major front-end and back-end files are private, but most of the contents are public to give you a general idea about the project structure and the tech stack. I am willing to open-source the whole repository if there are a good amount of people requesting for open source. If you want to learn about the details of this repository, you can vote for open-source [here](https://covid-spread-viz.canny.io/requests/p/open-source).
 
 ## TODO
-- Adding data for case-population ratio
-- Adding data for active vases (confirmed-recovery-deaths), although most of the recovery data is absent
+- Add population data on country hover
+- Add case-population ratio as a data option
+- Add active vases (confirmed-recovery-deaths) as a data option, although most of the recovery data is absent
