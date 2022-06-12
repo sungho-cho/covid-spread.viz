@@ -13,7 +13,7 @@ It is built using React.js, GoLang, Mapbox, and gRPC. The web application and th
 
 <img src="https://user-images.githubusercontent.com/46757971/173222371-538e6579-1e4f-47b5-824e-75437929e7c1.png" width=60% height=60%>
 
-- Data: MongoDB Atlas, JHU CSSE Covid-19 DataSet
+- Data: MongoDB Atlas, JHU CSSE Covid-19 DataSet, Google Cloud Storage
 - Back-end: GoLang, Google Cloud Run, gRPC, gRPC-web, Protocol Buffers
 - Front-end: React.js, TypeScript, Mapbox, Google App Engine, gRPC-web
 
