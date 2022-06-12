@@ -68,7 +68,7 @@ func allowCors(resp http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	// Fetch covid data for all countries and save the data locally
+	// Fetch covid data for all countries and save the data to GCS bucket
 	go utils.Fetch()
 
 	// Set up a gRPC server
