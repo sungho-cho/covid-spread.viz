@@ -30,5 +30,3 @@ This repository is not fully open-sourced (yet). Some of the major front-end and
 ## TODO
 - Adding data for case-population ratio
 - Adding data for active vases (confirmed-recovery-deaths), although most of the recovery data is absent
-
-## License
