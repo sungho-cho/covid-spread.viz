@@ -1,5 +1,8 @@
 # private
 frontend/.env*
+frontend/config/
+frontend/public/
+frontend/scripts/
 frontend/src/api/feature_ids.json
 frontend/src/api/mapbox_config.ts
 frontend/src/components/CovidMap.tsx
