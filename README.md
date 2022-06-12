@@ -2,7 +2,7 @@
 
 <img src="https://user-images.githubusercontent.com/46757971/172483410-9069e2e0-c2e9-483c-b645-b4674f951d1b.gif" width=60% height=60%>
 
-[**Live Website**](https://covidviz.com)
+[**Live Website**](https://www.covidviz.com)
 
 **covid-spread.viz**'s goal is to deliver a fast and interactive visualizer for the historical data of COVID-19 since the outbreak to the present day. It was built in order for us to better understand the tragic impact of the coronavirus pandemic over the world population. 
 
