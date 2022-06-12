@@ -1,5 +1,6 @@
 import { memo } from 'react'
 import { styled } from '@mui/material/styles'
+import InfoIcon from '@mui/icons-material/Info'
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
@@ -38,7 +39,8 @@ const DataSelect = (props: DataSelectProps) => {
     setDisplayData(event.target.value as string)
   }
   const optionFontSize = 14
-  const recoveryMsg = "Recovery data is missing for some countries and dates. Click Info button on the right for more info."
+  const recoveryMsg1 = "Recovery data is missing for some countries and dates. Click the info button "
+  const recoveryMsg2 = " for more info."
 
   return (
     <div className="data-select">
@@ -50,7 +52,11 @@ const DataSelect = (props: DataSelectProps) => {
         input={<StyledInput />}
       >
         <MenuItem value={"confirmed"} sx={{ fontSize: optionFontSize }}>Confirmed</MenuItem>
-        <Tooltip placement="left" title={<Typography fontSize={13}>{recoveryMsg}</Typography>}>
+        <Tooltip placement="left" title={
+          <Typography fontSize={13}>
+            {recoveryMsg1}<InfoIcon sx={{ fontSize: 16 }} />{recoveryMsg2}
+          </Typography>}
+        >
           <MenuItem value={"recovered"} sx={{ fontSize: optionFontSize }}>
             Recovered
             <PriorityHighIcon sx={{ fontSize: 15 }} />

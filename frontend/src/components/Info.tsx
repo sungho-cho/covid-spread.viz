@@ -80,7 +80,7 @@ const Info = () => {
       >
         <Box sx={modalStyle}>
           <Typography id="info-modal-title" variant="h6" gutterBottom component="h2">
-            Covid-19 Spread Visualizer
+            COVID-19 Spread Visualizer
             <IconButton aria-label="share" onClick={copyVizURL}>
               <ShareIcon sx={{ fontSize: iconSize }} />
             </IconButton>
@@ -110,7 +110,9 @@ const Info = () => {
             <Typography variant="body2">
               The data is from <Link href={jhuURL} target="_blank" rel="noopener">JHU CSSE COVID-19 Data</Link>.
               It is updated daily when JHU CSSE publishes new data.
-              Note that recovery data for United States is absent since December 14, 2020,
+            </Typography>
+            <Typography variant="body2">
+              <strong style={{ color: "#F3AF16" }}>Note:</strong> recovery data for United States is absent since December 14, 2020,
               as well as recovery data for all countries since August 5th, 2021,
               as JHU CSSE stopped tracking recovery data
               (<Link href={jhuRecoveryURL} target="_blank" rel="noopener">view details</Link>).
