@@ -36,7 +36,7 @@ const Info = () => {
 
   const iconSize = '20px'
   const popoverDelay = 1750
-  const vizURL = "example.com" // TODO: Change to website address
+  const vizURL = "https://www.covidviz.com"
   const emailURL = "mailto:sungh5c@gmail.com"
   const githubURL = "https://github.com/sungho-cho"
   const repoURL = "https://github.com/sungho-cho/covid-spread.viz"
