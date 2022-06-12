@@ -1,12 +1,12 @@
 # covid-spread.viz
 
+<img src="https://user-images.githubusercontent.com/46757971/172483410-9069e2e0-c2e9-483c-b645-b4674f951d1b.gif" width=60% height=60%>
+
 [**Live Website**](https://covidviz.com)
 
 **covid-spread.viz**'s goal is to deliver a fast and interactive visualizer for the historical data of COVID-19 since the outbreak to the present day. It was built in order for us to better understand the tragic impact of the coronavirus pandemic over the world population. 
 
 It is built using React.js, GoLang, Mapbox, and gRPC. The web application and the back-end server are not fully open-sourced, but the repository is semi-public to introduce the general project structure and the tech stack. See [Open Source](#open-source) section for more details.
-
-<img src="https://user-images.githubusercontent.com/46757971/172483410-9069e2e0-c2e9-483c-b645-b4674f951d1b.gif" width=60% height=60%>
 
 
 ## Tech Stack
