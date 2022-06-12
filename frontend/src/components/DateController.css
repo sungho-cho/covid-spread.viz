@@ -5,7 +5,7 @@
   left: 0;
   width: 100%;
   max-height: 90px;
-  padding: 12px 36px 90px 36px;
+  padding: 12px 36px 90px 30px;
   box-sizing: border-box;
   display: inline-flex;
 }
@@ -19,11 +19,11 @@
   flex-grow: 2;
   max-width: 85px;
   margin-left: 30px;
-  margin-top: 7px;
+  margin-top: 8px;
 }
 
 .date-slider {
   flex-grow: 3;
-  margin-top: 10px;
-  margin-left: 35px;
+  margin-top: 12px;
+  margin-left: 45px;
 }

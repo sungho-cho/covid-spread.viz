@@ -1,5 +1,8 @@
 import { memo } from 'react'
 import { styled } from '@mui/material/styles'
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh'
+import Tooltip from '@mui/material/Tooltip'
+import Typography from '@mui/material/Typography'
 import InputBase from '@mui/material/InputBase'
 import MenuItem from '@mui/material/MenuItem'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
@@ -31,10 +34,11 @@ const DataSelect = (props: DataSelectProps) => {
       opacity: '0.8',
     },
   }))
-
   const handleChange = (event: SelectChangeEvent) => {
     setDisplayData(event.target.value as string)
   }
+  const optionFontSize = 14
+  const recoveryMsg = "Recovery data is missing for some countries and dates. Click Info button on the right for more info."
 
   return (
     <div className="data-select">
@@ -45,11 +49,16 @@ const DataSelect = (props: DataSelectProps) => {
         onChange={handleChange}
         input={<StyledInput />}
       >
-        <MenuItem value={"confirmed"}>Confirmed</MenuItem>
-        <MenuItem value={"recovered"}>Recovered</MenuItem>
-        <MenuItem value={"deaths"}>Deaths</MenuItem>
+        <MenuItem value={"confirmed"} sx={{ fontSize: optionFontSize }}>Confirmed</MenuItem>
+        <Tooltip placement="left" title={<Typography fontSize={13}>{recoveryMsg}</Typography>}>
+          <MenuItem value={"recovered"} sx={{ fontSize: optionFontSize }}>
+            Recovered
+            <PriorityHighIcon sx={{ fontSize: 15 }} />
+          </MenuItem>
+        </Tooltip>
+        <MenuItem value={"deaths"} sx={{ fontSize: optionFontSize }}>Deaths</MenuItem>
       </Select>
-    </div>
+    </div >
   )
 }
 
