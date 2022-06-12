@@ -13,9 +13,9 @@ It is built using React.js, GoLang, Mapbox, and gRPC. The web application and th
 
 <img src="https://user-images.githubusercontent.com/46757971/173222371-538e6579-1e4f-47b5-824e-75437929e7c1.png" width=60% height=60%>
 
-- Data: MongoDB Atlas, JHU CSSE Covid-19 DataSet, Google Cloud Storage
-- Back-end: GoLang, Google Cloud Run, gRPC, gRPC-web, Protocol Buffers
-- Front-end: React.js, TypeScript, Mapbox, Google App Engine, gRPC-web
+- Data: JHU CSSE COVID-19 DataSet, MongoDB Atlas, Google Cloud Storage
+- Back-end: GoLang, gRPC, gRPC-web, Protocol Buffers, Google Cloud Run
+- Front-end: React.js, TypeScript, Mapbox, gRPC-web, Google App Engine
 
 ## Data
 The original data source is John Hopkins University CSSE's [COVID-19 DataSet](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data).
