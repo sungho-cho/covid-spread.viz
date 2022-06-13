@@ -22,23 +22,25 @@ const DataSelect = (props: DataSelectProps) => {
       marginTop: theme.spacing(3),
     },
     '& .MuiInputBase-input': {
-      borderRadius: 4,
-      color: 'white',
+      borderRadius: 6,
+      color: '#ffffff',
       backgroundColor: 'rgba(255, 255, 255, 0.12)',
-      fontSize: '14px',
+      fontSize: '16px',
       fontWeight: 700,
       lineHeight: '6px',
       textAlign: 'center',
       verticalAlign: 'middle',
-      padding: '16px 10px 2px 12px',
+      padding: '19px 10px 2px 12px',
       position: 'relative',
-      opacity: '0.8',
     },
   }))
   const handleChange = (event: SelectChangeEvent) => {
     setDisplayData(event.target.value as string)
   }
-  const optionFontSize = 14
+  const menuItemStyle = {
+    fontSize: 15,
+    fontWeight: 500,
+  }
   const recoveryMsg1 = "Recovery data is missing for some countries and dates. Click the info button "
   const recoveryMsg2 = " for more info."
 
@@ -50,19 +52,20 @@ const DataSelect = (props: DataSelectProps) => {
         label="Data to display"
         onChange={handleChange}
         input={<StyledInput />}
+        sx={{ color: '#ffffff', style: { color: '#ffffff' } }}
       >
-        <MenuItem value={"confirmed"} sx={{ fontSize: optionFontSize }}>Confirmed</MenuItem>
+        <MenuItem value={"confirmed"} sx={menuItemStyle}>Confirmed</MenuItem>
         <Tooltip placement="left" title={
           <Typography fontSize={13}>
             {recoveryMsg1}<InfoIcon sx={{ fontSize: 16 }} />{recoveryMsg2}
-          </Typography>}
-        >
-          <MenuItem value={"recovered"} sx={{ fontSize: optionFontSize }}>
+          </Typography>
+        }>
+          <MenuItem value={"recovered"} sx={menuItemStyle}>
             Recovered
             <PriorityHighIcon sx={{ fontSize: 15 }} />
           </MenuItem>
         </Tooltip>
-        <MenuItem value={"deaths"} sx={{ fontSize: optionFontSize }}>Deaths</MenuItem>
+        <MenuItem value={"deaths"} sx={menuItemStyle}>Deaths</MenuItem>
       </Select>
     </div >
   )

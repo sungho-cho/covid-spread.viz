@@ -19,16 +19,10 @@
 
 .legend-title {
   font-weight: bold;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 6px;
   display: block;
-  color: lightgray;
-}
-
-.legend-description {
-  font-size: 12px;
-  line-height: 6px;
-  color: lightgray;
+  color: #ffffff;
 }
 
 .legend-color {
@@ -41,7 +35,7 @@
 }
 
 .legend-line {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 18px;
-  color: lightgray;
+  color: #ffffff;
 }
