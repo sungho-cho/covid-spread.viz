@@ -9,6 +9,7 @@ import ShareIcon from '@mui/icons-material/Share'
 import Link from '@mui/material/Link'
 import Modal from '@mui/material/Modal'
 import Popover from '@mui/material/Popover'
+import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import './Info.css'
 
@@ -81,23 +82,31 @@ const Info = () => {
         <Box sx={modalStyle}>
           <Typography id="info-modal-title" variant="h6" gutterBottom component="h2">
             COVID-19 Spread Visualizer
-            <IconButton aria-label="share" onClick={copyVizURL}>
-              <ShareIcon sx={{ fontSize: iconSize }} />
-            </IconButton>
+            <Tooltip title="Copy URL">
+              <IconButton aria-label="share" onClick={copyVizURL}>
+                <ShareIcon sx={{ fontSize: iconSize }} />
+              </IconButton>
+            </Tooltip>
           </Typography>
           <div className="info-modal-name">
             <Typography variant="subtitle1" component="h3" sx={{ fontWeight: 700 }}>
               Sungho Cho
             </Typography>
-            <IconButton aria-label="linkedin" onClick={() => openURL(linkedinURL)}>
-              <LinkedInIcon sx={{ fontSize: iconSize }} />
-            </IconButton>
-            <IconButton aria-label="github" onClick={() => openURL(githubURL)}>
-              <GitHubIcon sx={{ fontSize: iconSize }} />
-            </IconButton>
-            <IconButton aria-label="email" onClick={() => openURL(emailURL)}>
-              <EmailIcon sx={{ fontSize: iconSize }} />
-            </IconButton>
+            <Tooltip title="LinkedIn">
+              <IconButton aria-label="linkedin" onClick={() => openURL(linkedinURL)}>
+                <LinkedInIcon sx={{ fontSize: iconSize }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="GitHub">
+              <IconButton aria-label="github" onClick={() => openURL(githubURL)}>
+                <GitHubIcon sx={{ fontSize: iconSize }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Email">
+              <IconButton aria-label="email" onClick={() => openURL(emailURL)}>
+                <EmailIcon sx={{ fontSize: iconSize }} />
+              </IconButton>
+            </Tooltip>
           </div>
           <Typography id="info-modal-career" variant="subtitle2" component="h4" gutterBottom>
             Carnegie Mellon '20 / Uber ATG / Aurora Innovation
