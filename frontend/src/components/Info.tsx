@@ -113,17 +113,17 @@ const Info = () => {
           </Typography>
           <div id="info-modal-description">
             <Typography variant="body2">
-              This website's goal is to deliver a fast visualizer for the historical data of COVID-19 since the outbreak to the present day.
+              This website's goal is to provide a fast, interactive visualization of COVID-19's historical data since the outbreak to the present day.
               It was built in order for us to better understand the tragic impact of the coronavirus pandemic over the world population.
             </Typography>
             <Typography variant="body2">
               The data is from <Link href={jhuURL} target="_blank" rel="noopener">JHU CSSE COVID-19 Data</Link>.
-              It is updated daily when JHU CSSE publishes new data.
+              It is updated daily when JHU CSSE publishes new data on their data repository.
             </Typography>
             <Typography variant="body2">
-              <strong style={{ color: "#F3AF16" }}>Note:</strong> recovery data for United States is absent since December 14, 2020,
+              <strong style={{ color: "#F3AF16" }}>Note:</strong> Recovery data for United States has been no longer recorded since December 14, 2020,
               as well as recovery data for all countries since August 5th, 2021,
-              as JHU CSSE stopped tracking recovery data
+              as Johns Hopkins CSSE has stopped tracking recovery data
               (<Link href={jhuRecoveryURL} target="_blank" rel="noopener">view details</Link>).
             </Typography>
             <Typography variant="body2">
