@@ -31,6 +31,7 @@ const Info = () => {
   const handleClose = () => setOpen(false)
   const copyVizURL = () => {
     navigator.clipboard.writeText(vizURL)
+    window.dataLayer.push({ event: 'share-click' })
     setPopoverText("Copied URL to clipboard")
     setPopoverOpen(true)
     setTimeout(() => setPopoverOpen(false), popoverDelay)

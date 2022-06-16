@@ -61,16 +61,18 @@ const DataSelect = (props: DataSelectProps) => {
         sx={{ color: '#ffffff', style: { color: '#ffffff' } }}
       >
         <MenuItem value={"confirmed"} sx={menuItemStyle}>Confirmed</MenuItem>
-        <Tooltip placement="left" title={
-          <Typography fontSize={13}>
-            {recoveryMsg1}<InfoIcon sx={{ fontSize: 16 }} />{recoveryMsg2}
-          </Typography>
-        }>
-          <MenuItem value={"recovered"} sx={menuItemStyle}>
-            Recovered
-            <PriorityHighIcon sx={{ fontSize: 15 }} />
-          </MenuItem>
-        </Tooltip>
+        <MenuItem value={"recovered"} sx={menuItemStyle}>
+          <Tooltip placement="left" title={
+            <Typography fontSize={13}>
+              {recoveryMsg1}<InfoIcon sx={{ fontSize: 16 }} />{recoveryMsg2}
+            </Typography>
+          }>
+            <div>
+              Recovered
+              {displayData != "recovered" ? <PriorityHighIcon sx={{ fontSize: 15 }} /> : <></>}
+            </div>
+          </Tooltip>
+        </MenuItem>
         <MenuItem value={"deaths"} sx={menuItemStyle}>Deaths</MenuItem>
       </Select>
     </div >
