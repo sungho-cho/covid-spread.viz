@@ -38,7 +38,7 @@ const Info = () => {
   }
   const openURL = (url: string) => {
     window.open(url, '_blank')?.focus()
-    if (url == emailURL) {
+    if (url === emailURL) {
       window.dataLayer.push({ event: 'email-click' })
     }
     else if ([linkedinURL, githubURL, personalURL].includes(url)) {

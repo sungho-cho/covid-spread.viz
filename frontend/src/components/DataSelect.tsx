@@ -69,7 +69,7 @@ const DataSelect = (props: DataSelectProps) => {
           }>
             <div>
               Recovered
-              {displayData != "recovered" ? <PriorityHighIcon sx={{ fontSize: 15 }} /> : <></>}
+              {displayData !== "recovered" ? <PriorityHighIcon sx={{ fontSize: 15 }} /> : <></>}
             </div>
           </Tooltip>
         </MenuItem>
