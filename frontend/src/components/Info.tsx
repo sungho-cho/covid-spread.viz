@@ -5,6 +5,7 @@ import EmailIcon from '@mui/icons-material/Email'
 import InfoIcon from '@mui/icons-material/Info'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import PublicIcon from '@mui/icons-material/Public'
 import ShareIcon from '@mui/icons-material/Share'
 import Link from '@mui/material/Link'
 import Modal from '@mui/material/Modal'
@@ -38,6 +39,7 @@ const Info = () => {
   const iconSize = '20px'
   const popoverDelay = 1750
   const vizURL = "https://www.covidviz.com"
+  const personalURL = "https://sunghocho.com"
   const emailURL = "mailto:sungh5c@gmail.com"
   const githubURL = "https://github.com/sungho-cho"
   const repoURL = "https://github.com/sungho-cho/covid-spread.viz"
@@ -100,6 +102,11 @@ const Info = () => {
             <Tooltip title="GitHub">
               <IconButton aria-label="github" onClick={() => openURL(githubURL)}>
                 <GitHubIcon sx={{ fontSize: iconSize }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Personal Website">
+              <IconButton aria-label="personal" onClick={() => openURL(personalURL)}>
+                <PublicIcon sx={{ fontSize: iconSize }} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Email">
