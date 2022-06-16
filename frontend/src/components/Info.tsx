@@ -24,7 +24,10 @@ const Info = () => {
   const [popoverOpen, setPopoverOpen] = useState(false)
   const [popoverText, setPopoverText] = useState("")
 
-  const handleOpen = () => setOpen(true)
+  const handleOpen = () => {
+    setOpen(true)
+    window.dataLayer.push({ event: 'info-click' })
+  }
   const handleClose = () => setOpen(false)
   const copyVizURL = () => {
     navigator.clipboard.writeText(vizURL)
@@ -34,6 +37,15 @@ const Info = () => {
   }
   const openURL = (url: string) => {
     window.open(url, '_blank')?.focus()
+    if (url == emailURL) {
+      window.dataLayer.push({ event: 'email-click' })
+    }
+    else if ([linkedinURL, githubURL, personalURL].includes(url)) {
+      window.dataLayer.push({
+        event: 'profile-link-click',
+        eventProps: { 'profile-link': url }
+      })
+    }
   }
 
   const iconSize = '20px'

@@ -36,6 +36,12 @@ const DataSelect = (props: DataSelectProps) => {
   }))
   const handleChange = (event: SelectChangeEvent) => {
     setDisplayData(event.target.value as string)
+    window.dataLayer.push({
+      event: 'data-change',
+      eventProps: {
+        'selected-data': event.target.value
+      }
+    })
   }
   const menuItemStyle = {
     fontSize: 15,

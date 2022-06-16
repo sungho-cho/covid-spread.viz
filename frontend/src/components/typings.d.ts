@@ -1,0 +1,1 @@
+interface Window { dataLayer: any; }
