@@ -5,6 +5,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import CovidMap from './CovidMap'
 import { getAllData } from '../api/grpc_client'
+import { getGCSObject } from '../api/gcs'
 import { CountriesData } from '../protos/covid_data_pb'
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
 
   useEffect(() => {
     tryFetchingData()
+    getGCSObject(null)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const tryFetchingData = () => {
