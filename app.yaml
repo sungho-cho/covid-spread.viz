@@ -2,11 +2,14 @@ runtime: nodejs16
 env: standard
 handlers:
   - url: /static
+    secure: always
     static_dir: frontend/build/static
   - url: /(.*\..+)$
+    secure: always
     static_files: frontend/build/\1
     upload: frontend/build/(.*\..+)$
   - url: /.*
+    secure: always
     static_files: frontend/build/index.html
     upload: frontend/build/index.html
     
